@@ -11,11 +11,19 @@ import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredMemberProperties
 
 data class HiddenConfig(
+    var enemyHP: Boolean = true,
 ) {
     companion object {
         @Transient private var dirty: Boolean = false
 
         private lateinit var INSTANCE: HiddenConfig
+
+        var enemyHP: Boolean
+            get() = INSTANCE.enemyHP
+            set(value) {
+                if (INSTANCE.enemyHP != value) dirty = true
+                INSTANCE.enemyHP = value
+            }
 
         fun load() {
             val configPath = Paths.get(ConfigUtils.CONFIG_DIR, "Hidden Information", "config.json")
