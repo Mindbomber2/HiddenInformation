@@ -2,6 +2,7 @@ package com.evacipated.cardcrawl.mod.hiddeninfo.patches
 
 import com.evacipated.cardcrawl.mod.hiddeninfo.HiddenConfig
 import com.evacipated.cardcrawl.modthespire.lib.*
+import com.megacrit.cardcrawl.characters.AbstractPlayer
 import com.megacrit.cardcrawl.core.AbstractCreature
 import com.megacrit.cardcrawl.helpers.FontHelper
 import com.megacrit.cardcrawl.monsters.AbstractMonster
@@ -18,6 +19,9 @@ object HideBlock {
     )
     fun Insert(__instance: AbstractCreature): SpireReturn<Void> {
         if (HiddenConfig.enemyBlock && __instance is AbstractMonster) {
+            return SpireReturn.Return()
+        }
+        if (HiddenConfig.playerBlock && __instance is AbstractPlayer) {
             return SpireReturn.Return()
         }
         return SpireReturn.Continue()

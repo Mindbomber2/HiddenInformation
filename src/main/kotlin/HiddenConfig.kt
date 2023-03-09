@@ -14,6 +14,7 @@ data class HiddenConfig(
     var enemyBlock: Boolean = true,
     var enemyIntentDamage: Boolean = true,
     var playerHP: Boolean = true,
+    var playerBlock: Boolean = true,
     var playerGold: Boolean = true,
     var shopPrices: Boolean = true,
     var damageNumbers: Boolean = true,
@@ -49,6 +50,12 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.playerHP != value) dirty = true
                 INSTANCE.playerHP = value
+            }
+        var playerBlock: Boolean
+            get() = INSTANCE.playerBlock
+            set(value) {
+                if (INSTANCE.playerBlock != value) dirty = true
+                INSTANCE.playerBlock = value
             }
         var playerGold: Boolean
             get() = INSTANCE.playerGold
