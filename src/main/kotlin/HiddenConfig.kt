@@ -17,6 +17,7 @@ data class HiddenConfig(
     var shopPrices: Boolean = true,
     var damageNumbers: Boolean = true,
     var mapNodeType: Boolean = true,
+    var bossIcon: Boolean = true,
 ) {
     companion object {
         @Transient private var dirty: Boolean = false
@@ -67,6 +68,12 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.mapNodeType != value) dirty = true
                 INSTANCE.mapNodeType = value
+            }
+        var bossIcon: Boolean
+            get() = INSTANCE.bossIcon
+            set(value) {
+                if (INSTANCE.bossIcon != value) dirty = true
+                INSTANCE.bossIcon = value
             }
 
         fun load() {
