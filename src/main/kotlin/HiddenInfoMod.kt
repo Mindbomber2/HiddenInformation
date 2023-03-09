@@ -37,6 +37,10 @@ class HiddenInfoMod :
         fun assetPath(path: String): String {
             return "${ID}Assets/$path"
         }
+
+        @JvmStatic
+        fun replaceNumbers(str: String): String =
+            str.replace(numberRegex, "?")
     }
 
     override fun receivePostInitialize() {
