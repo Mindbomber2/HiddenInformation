@@ -23,6 +23,8 @@ class HiddenInfoMod :
         val ID: String = "hiddeninfo"
         val NAME: String = "Hidden Information"
 
+        internal val numberRegex = Regex("[0-9]+")
+
         @Suppress("unused")
         @JvmStatic
         fun initialize() {

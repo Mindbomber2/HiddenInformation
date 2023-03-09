@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.evacipated.cardcrawl.modthespire.lib.ConfigUtils
 import com.google.gson.GsonBuilder
 import imgui.ImGui
-import imgui.type.ImBoolean
 import java.nio.file.Paths
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.createType
@@ -12,6 +11,7 @@ import kotlin.reflect.full.declaredMemberProperties
 
 data class HiddenConfig(
     var enemyHP: Boolean = true,
+    var enemyIntentDamage: Boolean = true,
     var playerHP: Boolean = true,
 ) {
     companion object {
@@ -24,6 +24,12 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.enemyHP != value) dirty = true
                 INSTANCE.enemyHP = value
+            }
+        var enemyIntentDamage: Boolean
+            get() = INSTANCE.enemyIntentDamage
+            set(value) {
+                if (INSTANCE.enemyIntentDamage != value) dirty = true
+                INSTANCE.enemyIntentDamage = value
             }
 
         var playerHP: Boolean
