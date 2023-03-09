@@ -3,7 +3,6 @@ package com.evacipated.cardcrawl.mod.hiddeninfo.patches
 import com.evacipated.cardcrawl.mod.hiddeninfo.HiddenConfig
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch2
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn
-import com.megacrit.cardcrawl.characters.AbstractPlayer
 import com.megacrit.cardcrawl.core.AbstractCreature
 import com.megacrit.cardcrawl.monsters.AbstractMonster
 
@@ -11,7 +10,7 @@ import com.megacrit.cardcrawl.monsters.AbstractMonster
     clz = AbstractCreature::class,
     method = "renderHealthText"
 )
-object HideHP {
+object HideEnemyHP {
     @JvmStatic
     fun Prefix(__instance: AbstractCreature): SpireReturn<Void> {
         if (HiddenConfig.enemyHP && __instance is AbstractMonster) {

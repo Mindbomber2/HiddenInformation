@@ -12,6 +12,7 @@ import kotlin.reflect.full.declaredMemberProperties
 
 data class HiddenConfig(
     var enemyHP: Boolean = true,
+    var playerHP: Boolean = true,
 ) {
     companion object {
         @Transient private var dirty: Boolean = false
@@ -23,6 +24,13 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.enemyHP != value) dirty = true
                 INSTANCE.enemyHP = value
+            }
+
+        var playerHP: Boolean
+            get() = INSTANCE.playerHP
+            set(value) {
+                if (INSTANCE.playerHP != value) dirty = true
+                INSTANCE.playerHP = value
             }
 
         fun load() {
