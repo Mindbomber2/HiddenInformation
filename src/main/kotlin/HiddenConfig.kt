@@ -14,6 +14,7 @@ data class HiddenConfig(
     var enemyIntentDamage: Boolean = true,
     var playerHP: Boolean = true,
     var playerGold: Boolean = true,
+    var shopPrices: Boolean = true,
     var damageNumbers: Boolean = true,
 ) {
     companion object {
@@ -45,6 +46,12 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.playerGold != value) dirty = true
                 INSTANCE.playerGold = value
+            }
+        var shopPrices: Boolean
+            get() = INSTANCE.shopPrices
+            set(value) {
+                if (INSTANCE.shopPrices != value) dirty = true
+                INSTANCE.shopPrices = value
             }
 
         var damageNumbers: Boolean
