@@ -13,8 +13,10 @@ data class HiddenConfig(
     var enemyHP: Boolean = true,
     var enemyBlock: Boolean = true,
     var enemyIntentDamage: Boolean = true,
+    var enemyPowerAmount: Boolean = true,
     var playerHP: Boolean = true,
     var playerBlock: Boolean = true,
+    var playerPowerAmount: Boolean = true,
     var playerGold: Boolean = true,
     var shopPrices: Boolean = true,
     var damageNumbers: Boolean = true,
@@ -44,6 +46,12 @@ data class HiddenConfig(
                 if (INSTANCE.enemyIntentDamage != value) dirty = true
                 INSTANCE.enemyIntentDamage = value
             }
+        var enemyPowerAmount: Boolean
+            get() = INSTANCE.enemyPowerAmount
+            set(value) {
+                if (INSTANCE.enemyPowerAmount != value) dirty = true
+                INSTANCE.enemyPowerAmount = value
+            }
 
         var playerHP: Boolean
             get() = INSTANCE.playerHP
@@ -56,6 +64,12 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.playerBlock != value) dirty = true
                 INSTANCE.playerBlock = value
+            }
+        var playerPowerAmount: Boolean
+            get() = INSTANCE.playerPowerAmount
+            set(value) {
+                if (INSTANCE.playerPowerAmount != value) dirty = true
+                INSTANCE.playerPowerAmount = value
             }
         var playerGold: Boolean
             get() = INSTANCE.playerGold
