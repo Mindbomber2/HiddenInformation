@@ -11,6 +11,7 @@ import kotlin.reflect.full.declaredMemberProperties
 
 data class HiddenConfig(
     var enemyHP: Boolean = true,
+    var enemyBlock: Boolean = true,
     var enemyIntentDamage: Boolean = true,
     var playerHP: Boolean = true,
     var playerGold: Boolean = true,
@@ -29,6 +30,12 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.enemyHP != value) dirty = true
                 INSTANCE.enemyHP = value
+            }
+        var enemyBlock: Boolean
+            get() = INSTANCE.enemyBlock
+            set(value) {
+                if (INSTANCE.enemyBlock != value) dirty = true
+                INSTANCE.enemyBlock = value
             }
         var enemyIntentDamage: Boolean
             get() = INSTANCE.enemyIntentDamage
