@@ -13,6 +13,7 @@ data class HiddenConfig(
     var enemyHP: Boolean = true,
     var enemyIntentDamage: Boolean = true,
     var playerHP: Boolean = true,
+    var damageNumbers: Boolean = true,
 ) {
     companion object {
         @Transient private var dirty: Boolean = false
@@ -37,6 +38,13 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.playerHP != value) dirty = true
                 INSTANCE.playerHP = value
+            }
+
+        var damageNumbers: Boolean
+            get() = INSTANCE.damageNumbers
+            set(value) {
+                if (INSTANCE.damageNumbers != value) dirty = true
+                INSTANCE.damageNumbers = value
             }
 
         fun load() {
