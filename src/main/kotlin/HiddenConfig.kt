@@ -23,6 +23,7 @@ data class HiddenConfig(
     var damageNumbers: Boolean = true,
     var mapNodeType: Boolean = true,
     var bossIcon: Boolean = true,
+    var cardDescriptions: Boolean = true,
 ) {
     companion object {
         @Transient private var dirty: Boolean = false
@@ -109,6 +110,13 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.bossIcon != value) dirty = true
                 INSTANCE.bossIcon = value
+            }
+
+        var cardDescriptions: Boolean
+            get() = INSTANCE.cardDescriptions
+            set(value) {
+                if (INSTANCE.cardDescriptions != value) dirty = true
+                INSTANCE.cardDescriptions = value
             }
 
         fun load() {
