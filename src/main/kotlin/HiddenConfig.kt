@@ -14,6 +14,7 @@ data class HiddenConfig(
     var enemyBlock: Boolean = true,
     var enemyIntentDamage: Boolean = true,
     var enemyPowerAmount: Boolean = true,
+    var enemy: Boolean = true,
     var playerHP: Boolean = true,
     var playerBlock: Boolean = true,
     var playerPowerAmount: Boolean = true,
@@ -51,6 +52,12 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.enemyPowerAmount != value) dirty = true
                 INSTANCE.enemyPowerAmount = value
+            }
+        var enemy: Boolean
+            get() = INSTANCE.enemy
+            set(value) {
+                if (INSTANCE.enemy != value) dirty = true
+                INSTANCE.enemy = value
             }
 
         var playerHP: Boolean
