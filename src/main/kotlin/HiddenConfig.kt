@@ -18,6 +18,7 @@ data class HiddenConfig(
     var playerHP: Boolean = true,
     var playerBlock: Boolean = true,
     var playerPowerAmount: Boolean = true,
+    var playerEnergy: Boolean = true,
     var playerGold: Boolean = true,
     var shopPrices: Boolean = true,
     var damageNumbers: Boolean = true,
@@ -81,6 +82,12 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.playerPowerAmount != value) dirty = true
                 INSTANCE.playerPowerAmount = value
+            }
+        var playerEnergy: Boolean
+            get() = INSTANCE.playerEnergy
+            set(value) {
+                if (INSTANCE.playerEnergy != value) dirty = true
+                INSTANCE.playerEnergy = value
             }
         var playerGold: Boolean
             get() = INSTANCE.playerGold
