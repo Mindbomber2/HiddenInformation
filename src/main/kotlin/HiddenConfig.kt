@@ -28,6 +28,7 @@ data class HiddenConfig(
     var cardTitles: Boolean = true,
     var cardCosts: Boolean = true,
     var cardArt: Boolean = true,
+    var orbNumbers: Boolean = true,
 ) {
     companion object {
         @Transient private var dirty: Boolean = false
@@ -145,6 +146,13 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.cardArt != value) dirty = true
                 INSTANCE.cardArt = value
+            }
+
+        var orbNumbers: Boolean
+            get() = INSTANCE.orbNumbers
+            set(value) {
+                if (INSTANCE.orbNumbers != value) dirty = true
+                INSTANCE.orbNumbers = value
             }
 
         fun load() {
