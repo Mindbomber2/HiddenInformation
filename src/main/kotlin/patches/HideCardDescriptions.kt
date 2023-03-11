@@ -23,6 +23,14 @@ import com.megacrit.cardcrawl.screens.SingleCardViewPopup
     SpirePatch2(
         clz = SingleCardViewPopup::class,
         method = "renderDescriptionCN"
+    ),
+    SpirePatch2(
+        clz = AbstractCard::class,
+        method = "renderCardTip"
+    ),
+    SpirePatch2(
+        clz = SingleCardViewPopup::class,
+        method = "renderTips"
     )
 )
 object HideCardDescriptions {
