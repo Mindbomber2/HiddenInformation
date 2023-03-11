@@ -7,12 +7,16 @@ import com.evacipated.cardcrawl.mod.hiddeninfo.HiddenConfig
 import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.assetPath
 import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.iz
 import com.evacipated.cardcrawl.modthespire.lib.*
+import com.megacrit.cardcrawl.core.AbstractCreature
+import com.megacrit.cardcrawl.helpers.FontHelper
 import com.megacrit.cardcrawl.helpers.ImageMaster
+import com.megacrit.cardcrawl.helpers.PowerTip
 import com.megacrit.cardcrawl.monsters.AbstractMonster
 import com.megacrit.cardcrawl.monsters.MonsterGroup
 import javassist.CtBehavior
 import javassist.expr.ExprEditor
 import javassist.expr.MethodCall
+import javassist.expr.NewExpr
 
 object HideEnemy {
     @SpirePatch2(
@@ -111,6 +115,38 @@ object HideEnemy {
                 return SpireReturn.Return()
             }
             return SpireReturn.Continue()
+        }
+    }
+
+    @SpirePatch2(
+        clz = AbstractMonster::class,
+        method = "renderTip"
+    )
+    object NameInPowerTooltips {
+        @JvmStatic
+        fun Instrument(): ExprEditor =
+            object : ExprEditor() {
+                override fun edit(e: NewExpr) {
+                    if (e.iz(PowerTip::class)) {
+                        e.replace(
+                            "if (${HideEnemy::class.qualifiedName}.hide()) {" +
+                                    "\$2 = ${NameInPowerTooltips::class.qualifiedName}.replaceName(this, \$2);" +
+                                    "}" +
+                                    "\$_ = \$proceed(\$\$);"
+                        )
+                    }
+                }
+            }
+
+        @JvmStatic
+        fun replaceName(owner: AbstractCreature?, description: String): String {
+            val name = owner?.name
+            if (name != null) {
+                return description
+                    .replace(name, "?")
+                    .replace(FontHelper.colorString(name, "y"), "#y???")
+            }
+            return description
         }
     }
 
