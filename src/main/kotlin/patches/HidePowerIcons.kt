@@ -4,12 +4,16 @@ import com.evacipated.cardcrawl.mod.hiddeninfo.HiddenConfig
 import com.evacipated.cardcrawl.mod.hiddeninfo.HiddenInfoMod
 import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.iz
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch2
+import com.evacipated.cardcrawl.modthespire.lib.SpirePatches2
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction
+import com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction
 import com.megacrit.cardcrawl.characters.AbstractPlayer
 import com.megacrit.cardcrawl.core.AbstractCreature
 import com.megacrit.cardcrawl.helpers.PowerTip
 import com.megacrit.cardcrawl.monsters.AbstractMonster
 import com.megacrit.cardcrawl.powers.AbstractPower
 import javassist.expr.ExprEditor
+import javassist.expr.FieldAccess
 import javassist.expr.MethodCall
 import javassist.expr.NewExpr
 
@@ -80,6 +84,34 @@ object HidePowerIcons {
                                     "\$2 = ${HiddenInfoMod.Statics::class.qualifiedName}.replaceNumbers(\$2);" +
                                     "}" +
                                     "\$_ = \$proceed(\$\$);"
+                        )
+                    }
+                }
+            }
+    }
+
+    @SpirePatches2(
+        SpirePatch2(
+            clz = ApplyPowerAction::class,
+            method = "update"
+        ),
+        SpirePatch2(
+            clz = RemoveSpecificPowerAction::class,
+            method = "update"
+        )
+    )
+    object PowerNameEffects {
+        @JvmStatic
+        fun Instrument(): ExprEditor =
+            object : ExprEditor() {
+                override fun edit(f: FieldAccess) {
+                    if (f.iz(AbstractPower::class, "name") && f.isReader) {
+                        f.replace(
+                            "if (${HidePowerIcons::class.qualifiedName}.hideName(target)) {" +
+                                    "\$_ = \"?\";" +
+                                    "} else {" +
+                                    "\$_ = \$proceed(\$\$);" +
+                                    "}"
                         )
                     }
                 }
