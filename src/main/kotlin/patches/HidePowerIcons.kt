@@ -45,7 +45,9 @@ object HidePowerIcons {
                 override fun edit(e: NewExpr) {
                     if (e.iz(PowerTip::class)) {
                         e.replace(
-                            "if (${HidePowerIcons::class.qualifiedName}.hideAmount(this)) {" +
+                            "if (${HidePowerIcons::class.qualifiedName}.hideDescription(this)) {" +
+                                    "\$2 = \" \";" + // has to be a space, empty string breaks the tooltip completely
+                                    "} else if (${HidePowerIcons::class.qualifiedName}.hideAmount(this)) {" +
                                     "\$2 = ${HiddenInfoMod.Statics::class.qualifiedName}.replaceNumbers(\$2);" +
                                     "}" +
                                     "\$_ = \$proceed(\$\$);"
@@ -66,7 +68,9 @@ object HidePowerIcons {
                 override fun edit(e: NewExpr) {
                     if (e.iz(PowerTip::class)) {
                         e.replace(
-                            "if (${HidePowerIcons::class.qualifiedName}.hideAmount(this)) {" +
+                            "if (${HidePowerIcons::class.qualifiedName}.hideDescription(this)) {" +
+                                    "\$2 = \" \";" + // has to be a space, empty string breaks the tooltip completely
+                                    // "if (${HidePowerIcons::class.qualifiedName}.hideAmount(this)) {" +
                                     "\$2 = ${HiddenInfoMod.Statics::class.qualifiedName}.replaceNumbers(\$2);" +
                                     "}" +
                                     "\$_ = \$proceed(\$\$);"
@@ -75,6 +79,11 @@ object HidePowerIcons {
                 }
             }
     }
+
+    @JvmStatic
+    fun hideDescription(instance: AbstractCreature): Boolean =
+        (instance is AbstractMonster && HiddenConfig.enemyPowerDescriptions)
+                || (instance is AbstractPlayer && HiddenConfig.playerPowerDescriptions)
 
     @JvmStatic
     fun hideAmount(instance: AbstractCreature): Boolean =
