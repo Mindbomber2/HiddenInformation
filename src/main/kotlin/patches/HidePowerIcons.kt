@@ -45,8 +45,11 @@ object HidePowerIcons {
                 override fun edit(e: NewExpr) {
                     if (e.iz(PowerTip::class)) {
                         e.replace(
-                            "if (${HidePowerIcons::class.qualifiedName}.hideDescription(this)) {" +
-                                    "\$2 = \" \";" + // has to be a space, empty string breaks the tooltip completely
+                            "if (${HidePowerIcons::class.qualifiedName}.hideName(this)) {" +
+                                    "\$1 = \"\u200B\";" + // empty string breaks the tooltip completely
+                                    "}" +
+                                    "if (${HidePowerIcons::class.qualifiedName}.hideDescription(this)) {" +
+                                    "\$2 = \"\u200B\";" + // empty string breaks the tooltip completely
                                     "} else if (${HidePowerIcons::class.qualifiedName}.hideAmount(this)) {" +
                                     "\$2 = ${HiddenInfoMod.Statics::class.qualifiedName}.replaceNumbers(\$2);" +
                                     "}" +
@@ -68,9 +71,12 @@ object HidePowerIcons {
                 override fun edit(e: NewExpr) {
                     if (e.iz(PowerTip::class)) {
                         e.replace(
-                            "if (${HidePowerIcons::class.qualifiedName}.hideDescription(this)) {" +
-                                    "\$2 = \" \";" + // has to be a space, empty string breaks the tooltip completely
-                                    // "if (${HidePowerIcons::class.qualifiedName}.hideAmount(this)) {" +
+                            "if (${HidePowerIcons::class.qualifiedName}.hideName(this)) {" +
+                                    "\$1 = \"\u200B\";" + // empty string breaks the tooltip completely
+                                    "}" +
+                                    "if (${HidePowerIcons::class.qualifiedName}.hideDescription(this)) {" +
+                                    "\$2 = \"\u200B\";" + // empty string breaks the tooltip completely
+                                    "} else if (${HidePowerIcons::class.qualifiedName}.hideAmount(this)) {" +
                                     "\$2 = ${HiddenInfoMod.Statics::class.qualifiedName}.replaceNumbers(\$2);" +
                                     "}" +
                                     "\$_ = \$proceed(\$\$);"
@@ -79,6 +85,11 @@ object HidePowerIcons {
                 }
             }
     }
+
+    @JvmStatic
+    fun hideName(instance: AbstractCreature): Boolean =
+        (instance is AbstractMonster && HiddenConfig.enemyPowerNames)
+                || (instance is AbstractPlayer && HiddenConfig.playerPowerNames)
 
     @JvmStatic
     fun hideDescription(instance: AbstractCreature): Boolean =
