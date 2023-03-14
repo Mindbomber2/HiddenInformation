@@ -41,6 +41,8 @@ data class HiddenConfig(
     var potionDescriptions: Boolean = true,
     var potionArt: Boolean = true,
     var orbNumbers: Boolean = true,
+    var eventOptionsEffect: Boolean = true,
+    var eventOptions: Boolean = false,
 ) {
     companion object {
         @Transient private var dirty: Boolean = false
@@ -239,6 +241,19 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.orbNumbers != value) dirty = true
                 INSTANCE.orbNumbers = value
+            }
+
+        var eventOptionsEffect: Boolean
+            get() = INSTANCE.eventOptionsEffect
+            set(value) {
+                if (INSTANCE.eventOptionsEffect != value) dirty = true
+                INSTANCE.eventOptionsEffect = value
+            }
+        var eventOptions: Boolean
+            get() = INSTANCE.eventOptions
+            set(value) {
+                if (INSTANCE.eventOptions != value) dirty = true
+                INSTANCE.eventOptions = value
             }
 
         fun load() {
