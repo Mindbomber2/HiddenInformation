@@ -33,6 +33,7 @@ data class HiddenConfig(
     var cardTitles: Boolean = true,
     var cardCosts: Boolean = true,
     var cardArt: Boolean = true,
+    var relicNames: Boolean = true,
     var relicDescriptions: Boolean = true,
     var relicFlavor: Boolean = true,
     var orbNumbers: Boolean = true,
@@ -185,6 +186,12 @@ data class HiddenConfig(
                 INSTANCE.cardArt = value
             }
 
+        var relicNames: Boolean
+            get() = INSTANCE.relicNames
+            set(value) {
+                if (INSTANCE.relicNames != value) dirty = true
+                INSTANCE.relicNames = value
+            }
         var relicDescriptions: Boolean
             get() = INSTANCE.relicDescriptions
             set(value) {
