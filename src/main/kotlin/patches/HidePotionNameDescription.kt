@@ -7,8 +7,10 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePatches2
 import com.megacrit.cardcrawl.helpers.PowerTip
 import com.megacrit.cardcrawl.helpers.TipHelper
 import com.megacrit.cardcrawl.potions.AbstractPotion
+import com.megacrit.cardcrawl.rewards.RewardItem
 import com.megacrit.cardcrawl.ui.panels.TopPanel
 import javassist.expr.ExprEditor
+import javassist.expr.FieldAccess
 import javassist.expr.MethodCall
 
 object HidePotionNameDescription {
@@ -81,4 +83,51 @@ object HidePotionNameDescription {
                 }
             }
     }
+
+    @SpirePatch2(
+        clz = RewardItem::class,
+        method = "render"
+    )
+    object NameReward {
+        @JvmStatic
+        fun Instrument(): ExprEditor =
+            object : ExprEditor() {
+                override fun edit(f: FieldAccess) {
+                    if (f.iz(RewardItem::class, "text") && f.isReader) {
+                        f.replace(
+                            "if (type == ${RewardItem.RewardType::class.qualifiedName}.POTION && ${HidePotionNameDescription::class.qualifiedName}.hideName()) {" +
+                                    "\$_ = \"\";" +
+                                    "} else {" +
+                                    "\$_ = \$proceed(\$\$);" +
+                                    "}"
+                        )
+                    }
+                }
+            }
+    }
+
+    @SpirePatch2(
+        clz = RewardItem::class,
+        method = "update"
+    )
+    object DescriptionReward {
+        @JvmStatic
+        fun Instrument(): ExprEditor =
+            object : ExprEditor() {
+                override fun edit(m: MethodCall) {
+                    if (m.iz(TipHelper::class, "queuePowerTips")) {
+                        m.replace(
+                            "${Tooltip::class.qualifiedName}.Prefix(potion);" +
+                                    "\$3 = potion.tips;" +
+                                    "\$_ = \$proceed(\$\$);" +
+                                    "${Tooltip::class.qualifiedName}.Postfix(potion);"
+                        )
+                    }
+                }
+            }
+    }
+
+    @JvmStatic
+    fun hideName(): Boolean =
+        HiddenConfig.potionNames
 }
