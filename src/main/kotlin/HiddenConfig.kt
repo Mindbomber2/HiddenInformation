@@ -37,6 +37,8 @@ data class HiddenConfig(
     var relicDescriptions: Boolean = true,
     var relicFlavor: Boolean = true,
     var relicArt: Boolean = true,
+    var potionNames: Boolean = true,
+    var potionDescriptions: Boolean = true,
     var potionArt: Boolean = true,
     var orbNumbers: Boolean = true,
 ) {
@@ -213,6 +215,18 @@ data class HiddenConfig(
                 INSTANCE.relicArt = value
             }
 
+        var potionNames: Boolean
+            get() = INSTANCE.potionNames
+            set(value) {
+                if (INSTANCE.potionNames != value) dirty = true
+                INSTANCE.potionNames = value
+            }
+        var potionDescriptions: Boolean
+            get() = INSTANCE.potionDescriptions
+            set(value) {
+                if (INSTANCE.potionDescriptions != value) dirty = true
+                INSTANCE.potionDescriptions = value
+            }
         var potionArt: Boolean
             get() = INSTANCE.potionArt
             set(value) {
