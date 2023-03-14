@@ -10,6 +10,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireReturn
 import com.megacrit.cardcrawl.helpers.ImageMaster
 import com.megacrit.cardcrawl.helpers.PowerTip
 import com.megacrit.cardcrawl.relics.AbstractRelic
+import com.megacrit.cardcrawl.rewards.RewardItem
 import com.megacrit.cardcrawl.screens.SingleRelicViewPopup
 import com.megacrit.cardcrawl.unlock.UnlockTracker
 import javassist.expr.ExprEditor
@@ -104,6 +105,63 @@ object HideRelics {
         }
     }
 
+    @SpirePatch2(
+        clz = RewardItem::class,
+        method = "render"
+    )
+    object NameReward {
+        @JvmStatic
+        fun Instrument(): ExprEditor =
+            object : ExprEditor() {
+                override fun edit(f: FieldAccess) {
+                    if (f.iz(RewardItem::class, "text") && f.isReader) {
+                        f.replace(
+                            "if (type == ${RewardItem.RewardType::class.qualifiedName}.RELIC && ${HideRelics::class.qualifiedName}.hideName()) {" +
+                                    "\$_ = \"\";" +
+                                    "} else {" +
+                                    "\$_ = \$proceed(\$\$);" +
+                                    "}"
+                        )
+                    } else if (f.iz(AbstractRelic::class, "name") && f.isReader) {
+                        f.replace(
+                            "if (type == ${RewardItem.RewardType::class.qualifiedName}.SAPPHIRE_KEY && ${HideRelics::class.qualifiedName}.hideName()) {" +
+                                    "\$_ = \"\";" +
+                                    "} else {" +
+                                    "\$_ = \$proceed(\$\$);" +
+                                    "}"
+                        )
+                    }
+                }
+
+                override fun edit(m: MethodCall) {
+                    if (m.iz(ArrayList::class, "add")) {
+                        m.replace(
+                                    "\$1 = ${NameReward::class.qualifiedName}.fixTip(relic, \$1);" +
+                                    "\$_ = \$proceed(\$\$);"
+                        )
+                    }
+                }
+            }
+
+        // Necessary because of a patch basemod makes for whatmod
+        @JvmStatic
+        fun fixTip(relic: AbstractRelic?, tip: Any?): Any? {
+            return if (relic != null && tip is PowerTip && relic.tips.size > 0 && relic.tips[0] == tip) {
+                if (HiddenConfig.relicNames && HiddenConfig.relicDescriptions) {
+                    PowerTip("\u200B", "\u200B")
+                } else if (HiddenConfig.relicNames) {
+                    PowerTip("\u200B", tip.body)
+                } else if (HiddenConfig.relicDescriptions) {
+                    PowerTip(tip.header, "\u200B")
+                } else {
+                    tip
+                }
+            } else {
+                tip
+            }
+        }
+    }
+
     @SpirePatches2(
         SpirePatch2(
             clz = AbstractRelic::class,
@@ -181,6 +239,10 @@ object HideRelics {
                 }
             }
     }
+
+    @JvmStatic
+    fun hideName(): Boolean =
+        HiddenConfig.relicNames
 
     @JvmStatic
     fun hideArt(): Boolean =
