@@ -1,12 +1,20 @@
 package com.evacipated.cardcrawl.mod.hiddeninfo.patches
 
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.evacipated.cardcrawl.mod.hiddeninfo.HiddenConfig
+import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.iz
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch2
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatches2
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn
+import com.megacrit.cardcrawl.helpers.ImageMaster
 import com.megacrit.cardcrawl.helpers.PowerTip
 import com.megacrit.cardcrawl.relics.AbstractRelic
 import com.megacrit.cardcrawl.screens.SingleRelicViewPopup
+import com.megacrit.cardcrawl.unlock.UnlockTracker
+import javassist.expr.ExprEditor
+import javassist.expr.FieldAccess
+import javassist.expr.MethodCall
 
 object HideRelics {
     @SpirePatch2(
@@ -95,4 +103,86 @@ object HideRelics {
             return SpireReturn.Continue()
         }
     }
+
+    @SpirePatches2(
+        SpirePatch2(
+            clz = AbstractRelic::class,
+            method = "renderInTopPanel"
+        ),
+        SpirePatch2(
+            clz = AbstractRelic::class,
+            method = "render",
+            paramtypez = [SpriteBatch::class]
+        ),
+        SpirePatch2(
+            clz = AbstractRelic::class,
+            method = "render",
+            paramtypez = [SpriteBatch::class, Boolean::class, Color::class]
+        ),
+        SpirePatch2(
+            clz = AbstractRelic::class,
+            method = "renderWithoutAmount"
+        ),
+        SpirePatch2(
+            clz = AbstractRelic::class,
+            method = "renderOutline",
+            paramtypez = [Color::class, SpriteBatch::class, Boolean::class]
+        ),
+        SpirePatch2(
+            clz = AbstractRelic::class,
+            method = "renderOutline",
+            paramtypez = [SpriteBatch::class, Boolean::class]
+        )
+    )
+    object Art {
+        @JvmStatic
+        fun Instrument(): ExprEditor =
+            object : ExprEditor() {
+                override fun edit(f: FieldAccess) {
+                    if (f.iz(AbstractRelic::class, "img")) {
+                        f.replace(
+                            "if (${HideRelics::class.qualifiedName}.hideArt()) {" +
+                                    "\$_ = ${ImageMaster::class.qualifiedName}.RELIC_LOCK;" +
+                                    "} else {" +
+                                    "\$_ = \$proceed(\$\$);" +
+                                    "}"
+                        )
+                    } else if (f.iz(AbstractRelic::class, "outlineImg")) {
+                        f.replace(
+                            "if (${HideRelics::class.qualifiedName}.hideArt()) {" +
+                                    "\$_ = ${ImageMaster::class.qualifiedName}.RELIC_LOCK_OUTLINE;" +
+                                    "} else {" +
+                                    "\$_ = \$proceed(\$\$);" +
+                                    "}"
+                        )
+                    }
+                }
+            }
+    }
+
+    @SpirePatch2(
+        clz = SingleRelicViewPopup::class,
+        method = "renderRelicImage"
+    )
+    object ArtSRV {
+        @JvmStatic
+        fun Instrument(): ExprEditor =
+            object : ExprEditor() {
+                override fun edit(m: MethodCall) {
+                    if (m.iz(UnlockTracker::class, "isRelicLocked")) {
+                        m.replace(
+                            "if (${HideRelics::class.qualifiedName}.hideArt()) {" +
+                                    "\$_ = true;" +
+                                    "} else {" +
+                                    "\$_ = \$proceed(\$\$);" +
+                                    "}"
+                        )
+                    }
+                }
+            }
+    }
+
+    @JvmStatic
+    fun hideArt(): Boolean =
+        HiddenConfig.relicArt
 }
