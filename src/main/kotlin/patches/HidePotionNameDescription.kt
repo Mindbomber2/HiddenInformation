@@ -1,10 +1,15 @@
 package com.evacipated.cardcrawl.mod.hiddeninfo.patches
 
 import com.evacipated.cardcrawl.mod.hiddeninfo.HiddenConfig
+import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.iz
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch2
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatches2
 import com.megacrit.cardcrawl.helpers.PowerTip
+import com.megacrit.cardcrawl.helpers.TipHelper
 import com.megacrit.cardcrawl.potions.AbstractPotion
+import com.megacrit.cardcrawl.ui.panels.TopPanel
+import javassist.expr.ExprEditor
+import javassist.expr.MethodCall
 
 object HidePotionNameDescription {
     @SpirePatches2(
@@ -54,5 +59,26 @@ object HidePotionNameDescription {
                 tipsSave = null
             }
         }
+    }
+
+    @SpirePatch2(
+        clz = TopPanel::class,
+        method = "renderPotionTips"
+    )
+    object TopPanelTips {
+        @JvmStatic
+        fun Instrument(): ExprEditor =
+            object : ExprEditor() {
+                override fun edit(m: MethodCall) {
+                    if (m.iz(TipHelper::class, "queuePowerTips")) {
+                        m.replace(
+                            "${Tooltip::class.qualifiedName}.Prefix(p);" +
+                                    "\$3 = p.tips;" +
+                                    "\$_ = \$proceed(\$\$);" +
+                                    "${Tooltip::class.qualifiedName}.Postfix(p);"
+                        )
+                    }
+                }
+            }
     }
 }
