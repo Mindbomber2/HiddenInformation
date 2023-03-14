@@ -37,6 +37,7 @@ data class HiddenConfig(
     var relicDescriptions: Boolean = true,
     var relicFlavor: Boolean = true,
     var relicArt: Boolean = true,
+    var potionArt: Boolean = true,
     var orbNumbers: Boolean = true,
 ) {
     companion object {
@@ -210,6 +211,13 @@ data class HiddenConfig(
             set(value) {
                 if (INSTANCE.relicArt != value) dirty = true
                 INSTANCE.relicArt = value
+            }
+
+        var potionArt: Boolean
+            get() = INSTANCE.potionArt
+            set(value) {
+                if (INSTANCE.potionArt != value) dirty = true
+                INSTANCE.potionArt = value
             }
 
         var orbNumbers: Boolean
