@@ -47,6 +47,7 @@ data class HiddenConfig(
     var orbNumbers: Boolean = true,
     var eventOptionsEffect: Boolean = true,
     var eventOptions: Boolean = false,
+    var eventArt: Boolean = true,
 ) {
     companion object {
         @Transient private val _strings: Map<String, String> = CardCrawlGame.languagePack.getUIString("HiddenConfig".makeID())?.TEXT_DICT ?: emptyMap()
@@ -121,6 +122,7 @@ data class HiddenConfig(
 
         var eventOptionsEffect: Boolean by Setting()
         var eventOptions: Boolean by Setting()
+        var eventArt: Boolean by Setting()
 
         fun load() {
             val configPath = Paths.get(ConfigUtils.CONFIG_DIR, "Hidden Information", "config.json")
@@ -212,6 +214,7 @@ data class HiddenConfig(
                     makeCheckbox(::eventOptionsEffect)
                     ImGui.unindent()
                     ImGui.endDisabled()
+                    makeCheckbox(::eventArt)
                 }
 
                 if (ImGui.collapsingHeader("All Settings")) {
