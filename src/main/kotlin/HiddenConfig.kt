@@ -48,6 +48,7 @@ data class HiddenConfig(
     var eventOptionsEffect: Boolean = true,
     var eventOptions: Boolean = false,
     var eventNames: Boolean = true,
+    var eventText: Boolean = true,
     var eventArt: Boolean = true,
 ) {
     companion object {
@@ -123,8 +124,9 @@ data class HiddenConfig(
 
         var eventOptionsEffect: Boolean by Setting()
         var eventOptions: Boolean by Setting()
-        var eventArt: Boolean by Setting()
         var eventNames: Boolean by Setting()
+        var eventText: Boolean by Setting()
+        var eventArt: Boolean by Setting()
 
         fun load() {
             val configPath = Paths.get(ConfigUtils.CONFIG_DIR, "Hidden Information", "config.json")
@@ -217,6 +219,7 @@ data class HiddenConfig(
                     ImGui.unindent()
                     ImGui.endDisabled()
                     makeCheckbox(::eventNames)
+                    makeCheckbox(::eventText)
                     makeCheckbox(::eventArt)
                 }
 
