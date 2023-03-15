@@ -5,7 +5,6 @@ import com.evacipated.cardcrawl.modthespire.lib.ConfigUtils
 import com.google.gson.GsonBuilder
 import imgui.ImGui
 import java.nio.file.Paths
-import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.KProperty
 import kotlin.reflect.full.createType
@@ -47,9 +46,9 @@ data class HiddenConfig(
     var eventOptions: Boolean = false,
 ) {
     companion object {
-        @Transient private var dirty: Boolean = false
+        @Transient private var _dirty: Boolean = false
 
-        private lateinit var INSTANCE: HiddenConfig
+        private lateinit var _INSTANCE: HiddenConfig
 
         private class Setting {
             private lateinit var realProp: KMutableProperty1<HiddenConfig, Boolean>
@@ -64,14 +63,14 @@ data class HiddenConfig(
 
             operator fun getValue(thisRef: Companion, property: KProperty<*>): Boolean {
                 init(property.name)
-                return realProp.get(INSTANCE)
+                return realProp.get(_INSTANCE)
             }
 
             operator fun setValue(thisRef: Companion, property: KProperty<*>, value: Any?) {
                 if (value is Boolean) {
                     init(property.name)
-                    if (realProp.get(INSTANCE) != value) dirty = true
-                    realProp.set(INSTANCE, value)
+                    if (realProp.get(_INSTANCE) != value) _dirty = true
+                    realProp.set(_INSTANCE, value)
                 }
             }
         }
@@ -127,12 +126,12 @@ data class HiddenConfig(
             if (configFile.exists()) {
                 val gson = GsonBuilder()
                     .create()
-                INSTANCE = gson.fromJson(configFile.reader(), HiddenConfig::class.java)
+                _INSTANCE = gson.fromJson(configFile.reader(), HiddenConfig::class.java)
             }
         }
 
         fun save() {
-            if (!dirty) {
+            if (!_dirty) {
                 return
             }
 
@@ -143,23 +142,29 @@ data class HiddenConfig(
             val gson = GsonBuilder()
                 .setPrettyPrinting()
                 .create()
-            val json = gson.toJson(INSTANCE)
+            val json = gson.toJson(_INSTANCE)
             configFile.writeString(json, false)
 
-            dirty = false
+            _dirty = false
         }
 
         internal fun imgui() {
             if (ImGui.begin("Hidden Information")) {
-                HiddenConfig::class.declaredMemberProperties.forEach { kprop ->
-                    if (kprop is KMutableProperty1 && kprop.returnType == Boolean::class.createType()) {
-                        if (ImGui.checkbox(kprop.name, kprop.get(INSTANCE) as Boolean)) {
-                            (kprop as KMutableProperty1<HiddenConfig, Boolean>).set(INSTANCE, !kprop.get(INSTANCE))
-                        }
-                    }
+                if (ImGui.collapsingHeader("All Settings")) {
+                    Companion::class.declaredMemberProperties
+                        .filter { !it.name.startsWith("_") }
+                        .filter { it.returnType == Boolean::class.createType() }
+                        .filterIsInstance<KMutableProperty1<Companion, Boolean>>()
+                        .forEach { makeCheckbox(this, it) }
                 }
             }
             ImGui.end()
+        }
+
+        private fun makeCheckbox(thisRef: Companion, kprop: KMutableProperty1<Companion, Boolean>) {
+            if (ImGui.checkbox(kprop.name, kprop.get(thisRef))) {
+                kprop.set(thisRef, !kprop.get(thisRef))
+            }
         }
     }
 }
