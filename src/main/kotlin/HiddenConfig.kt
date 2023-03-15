@@ -5,7 +5,9 @@ import com.evacipated.cardcrawl.modthespire.lib.ConfigUtils
 import com.google.gson.GsonBuilder
 import imgui.ImGui
 import java.nio.file.Paths
+import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KMutableProperty1
+import kotlin.reflect.KProperty
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredMemberProperties
 
@@ -49,212 +51,74 @@ data class HiddenConfig(
 
         private lateinit var INSTANCE: HiddenConfig
 
-        var enemyHP: Boolean
-            get() = INSTANCE.enemyHP
-            set(value) {
-                if (INSTANCE.enemyHP != value) dirty = true
-                INSTANCE.enemyHP = value
-            }
-        var enemyBlock: Boolean
-            get() = INSTANCE.enemyBlock
-            set(value) {
-                if (INSTANCE.enemyBlock != value) dirty = true
-                INSTANCE.enemyBlock = value
-            }
-        var enemyIntentDamage: Boolean
-            get() = INSTANCE.enemyIntentDamage
-            set(value) {
-                if (INSTANCE.enemyIntentDamage != value) dirty = true
-                INSTANCE.enemyIntentDamage = value
-            }
-        var enemyIntentDamageImg: Boolean
-            get() = INSTANCE.enemyIntentDamageImg
-            set(value) {
-                if (INSTANCE.enemyIntentDamageImg != value) dirty = true
-                INSTANCE.enemyIntentDamageImg = value
-            }
-        var enemyPowerAmount: Boolean
-            get() = INSTANCE.enemyPowerAmount
-            set(value) {
-                if (INSTANCE.enemyPowerAmount != value) dirty = true
-                INSTANCE.enemyPowerAmount = value
-            }
-        var enemyPowerDescriptions: Boolean
-            get() = INSTANCE.enemyPowerDescriptions
-            set(value) {
-                if (INSTANCE.enemyPowerDescriptions != value) dirty = true
-                INSTANCE.enemyPowerDescriptions = value
-            }
-        var enemyPowerNames: Boolean
-            get() = INSTANCE.enemyPowerNames
-            set(value) {
-                if (INSTANCE.enemyPowerNames != value) dirty = true
-                INSTANCE.enemyPowerNames = value
-            }
-        var enemy: Boolean
-            get() = INSTANCE.enemy
-            set(value) {
-                if (INSTANCE.enemy != value) dirty = true
-                INSTANCE.enemy = value
+        private class Setting {
+            private lateinit var realProp: KMutableProperty1<HiddenConfig, Boolean>
+
+            private fun init(name: String) {
+                if (!this::realProp.isInitialized) {
+                    realProp = HiddenConfig::class.declaredMemberProperties
+                            .filterIsInstance<KMutableProperty1<HiddenConfig, Boolean>>()
+                            .firstOrNull { it.name == name } ?: throw NoSuchElementException(name)
+                }
             }
 
-        var playerHP: Boolean
-            get() = INSTANCE.playerHP
-            set(value) {
-                if (INSTANCE.playerHP != value) dirty = true
-                INSTANCE.playerHP = value
-            }
-        var playerBlock: Boolean
-            get() = INSTANCE.playerBlock
-            set(value) {
-                if (INSTANCE.playerBlock != value) dirty = true
-                INSTANCE.playerBlock = value
-            }
-        var playerPowerAmount: Boolean
-            get() = INSTANCE.playerPowerAmount
-            set(value) {
-                if (INSTANCE.playerPowerAmount != value) dirty = true
-                INSTANCE.playerPowerAmount = value
-            }
-        var playerPowerDescriptions: Boolean
-            get() = INSTANCE.playerPowerDescriptions
-            set(value) {
-                if (INSTANCE.playerPowerDescriptions != value) dirty = true
-                INSTANCE.playerPowerDescriptions = value
-            }
-        var playerPowerNames: Boolean
-            get() = INSTANCE.playerPowerNames
-            set(value) {
-                if (INSTANCE.playerPowerNames != value) dirty = true
-                INSTANCE.playerPowerNames = value
-            }
-        var playerEnergy: Boolean
-            get() = INSTANCE.playerEnergy
-            set(value) {
-                if (INSTANCE.playerEnergy != value) dirty = true
-                INSTANCE.playerEnergy = value
-            }
-        var playerGold: Boolean
-            get() = INSTANCE.playerGold
-            set(value) {
-                if (INSTANCE.playerGold != value) dirty = true
-                INSTANCE.playerGold = value
-            }
-        var shopPrices: Boolean
-            get() = INSTANCE.shopPrices
-            set(value) {
-                if (INSTANCE.shopPrices != value) dirty = true
-                INSTANCE.shopPrices = value
+            operator fun getValue(thisRef: Companion, property: KProperty<*>): Boolean {
+                init(property.name)
+                return realProp.get(INSTANCE)
             }
 
-        var damageNumbers: Boolean
-            get() = INSTANCE.damageNumbers
-            set(value) {
-                if (INSTANCE.damageNumbers != value) dirty = true
-                INSTANCE.damageNumbers = value
+            operator fun setValue(thisRef: Companion, property: KProperty<*>, value: Any?) {
+                if (value is Boolean) {
+                    init(property.name)
+                    if (realProp.get(INSTANCE) != value) dirty = true
+                    realProp.set(INSTANCE, value)
+                }
             }
+        }
 
-        var mapNodeType: Boolean
-            get() = INSTANCE.mapNodeType
-            set(value) {
-                if (INSTANCE.mapNodeType != value) dirty = true
-                INSTANCE.mapNodeType = value
-            }
-        var bossIcon: Boolean
-            get() = INSTANCE.bossIcon
-            set(value) {
-                if (INSTANCE.bossIcon != value) dirty = true
-                INSTANCE.bossIcon = value
-            }
+        var enemyHP: Boolean by Setting()
+        var playerHP: Boolean by Setting()
 
-        var cardDescriptions: Boolean
-            get() = INSTANCE.cardDescriptions
-            set(value) {
-                if (INSTANCE.cardDescriptions != value) dirty = true
-                INSTANCE.cardDescriptions = value
-            }
-        var cardTitles: Boolean
-            get() = INSTANCE.cardTitles
-            set(value) {
-                if (INSTANCE.cardTitles != value) dirty = true
-                INSTANCE.cardTitles = value
-            }
-        var cardCosts: Boolean
-            get() = INSTANCE.cardCosts
-            set(value) {
-                if (INSTANCE.cardCosts != value) dirty = true
-                INSTANCE.cardCosts = value
-            }
-        var cardArt: Boolean
-            get() = INSTANCE.cardArt
-            set(value) {
-                if (INSTANCE.cardArt != value) dirty = true
-                INSTANCE.cardArt = value
-            }
+        var enemyBlock: Boolean by Setting()
+        var enemyIntentDamage: Boolean by Setting()
+        var enemyIntentDamageImg: Boolean by Setting()
+        var enemyPowerAmount: Boolean by Setting()
+        var enemyPowerDescriptions: Boolean by Setting()
+        var enemyPowerNames: Boolean by Setting()
+        var enemy: Boolean by Setting()
 
-        var relicNames: Boolean
-            get() = INSTANCE.relicNames
-            set(value) {
-                if (INSTANCE.relicNames != value) dirty = true
-                INSTANCE.relicNames = value
-            }
-        var relicDescriptions: Boolean
-            get() = INSTANCE.relicDescriptions
-            set(value) {
-                if (INSTANCE.relicDescriptions != value) dirty = true
-                INSTANCE.relicDescriptions = value
-            }
-        var relicFlavor: Boolean
-            get() = INSTANCE.relicFlavor
-            set(value) {
-                if (INSTANCE.relicFlavor != value) dirty = true
-                INSTANCE.relicFlavor = value
-            }
-        var relicArt: Boolean
-            get() = INSTANCE.relicArt
-            set(value) {
-                if (INSTANCE.relicArt != value) dirty = true
-                INSTANCE.relicArt = value
-            }
+        var playerBlock: Boolean by Setting()
+        var playerPowerAmount: Boolean by Setting()
+        var playerPowerDescriptions: Boolean by Setting()
+        var playerPowerNames: Boolean by Setting()
+        var playerEnergy: Boolean by Setting()
 
-        var potionNames: Boolean
-            get() = INSTANCE.potionNames
-            set(value) {
-                if (INSTANCE.potionNames != value) dirty = true
-                INSTANCE.potionNames = value
-            }
-        var potionDescriptions: Boolean
-            get() = INSTANCE.potionDescriptions
-            set(value) {
-                if (INSTANCE.potionDescriptions != value) dirty = true
-                INSTANCE.potionDescriptions = value
-            }
-        var potionArt: Boolean
-            get() = INSTANCE.potionArt
-            set(value) {
-                if (INSTANCE.potionArt != value) dirty = true
-                INSTANCE.potionArt = value
-            }
+        var playerGold: Boolean by Setting()
+        var shopPrices: Boolean by Setting()
 
-        var orbNumbers: Boolean
-            get() = INSTANCE.orbNumbers
-            set(value) {
-                if (INSTANCE.orbNumbers != value) dirty = true
-                INSTANCE.orbNumbers = value
-            }
+        var damageNumbers: Boolean by Setting()
 
-        var eventOptionsEffect: Boolean
-            get() = INSTANCE.eventOptionsEffect
-            set(value) {
-                if (INSTANCE.eventOptionsEffect != value) dirty = true
-                INSTANCE.eventOptionsEffect = value
-            }
-        var eventOptions: Boolean
-            get() = INSTANCE.eventOptions
-            set(value) {
-                if (INSTANCE.eventOptions != value) dirty = true
-                INSTANCE.eventOptions = value
-            }
+        var mapNodeType: Boolean by Setting()
+        var bossIcon: Boolean by Setting()
+
+        var cardDescriptions: Boolean by Setting()
+        var cardTitles: Boolean by Setting()
+        var cardCosts: Boolean by Setting()
+        var cardArt: Boolean by Setting()
+
+        var relicNames: Boolean by Setting()
+        var relicDescriptions: Boolean by Setting()
+        var relicFlavor: Boolean by Setting()
+        var relicArt: Boolean by Setting()
+
+        var potionNames: Boolean by Setting()
+        var potionDescriptions: Boolean by Setting()
+        var potionArt: Boolean by Setting()
+
+        var orbNumbers: Boolean by Setting()
+
+        var eventOptionsEffect: Boolean by Setting()
+        var eventOptions: Boolean by Setting()
 
         fun load() {
             val configPath = Paths.get(ConfigUtils.CONFIG_DIR, "Hidden Information", "config.json")
