@@ -5,6 +5,7 @@ import com.evacipated.cardcrawl.modthespire.lib.ConfigUtils
 import com.google.gson.GsonBuilder
 import imgui.ImGui
 import java.nio.file.Paths
+import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.KProperty
 import kotlin.reflect.full.createType
@@ -76,8 +77,6 @@ data class HiddenConfig(
         }
 
         var enemyHP: Boolean by Setting()
-        var playerHP: Boolean by Setting()
-
         var enemyBlock: Boolean by Setting()
         var enemyIntentDamage: Boolean by Setting()
         var enemyIntentDamageImg: Boolean by Setting()
@@ -86,6 +85,7 @@ data class HiddenConfig(
         var enemyPowerNames: Boolean by Setting()
         var enemy: Boolean by Setting()
 
+        var playerHP: Boolean by Setting()
         var playerBlock: Boolean by Setting()
         var playerPowerAmount: Boolean by Setting()
         var playerPowerDescriptions: Boolean by Setting()
@@ -150,6 +150,67 @@ data class HiddenConfig(
 
         internal fun imgui() {
             if (ImGui.begin("Hidden Information")) {
+                if (ImGui.collapsingHeader("Cards")) {
+                    makeCheckbox(::cardTitles)
+                    makeCheckbox(::cardDescriptions)
+                    makeCheckbox(::cardArt)
+                    makeCheckbox(::cardCosts)
+                }
+
+                if (ImGui.collapsingHeader("Enemies")) {
+                    makeCheckbox(::enemy)
+                    makeCheckbox(::enemyHP)
+                    makeCheckbox(::enemyBlock)
+                    makeCheckbox(::enemyIntentDamage)
+                    ImGui.beginDisabled(!enemyIntentDamage)
+                    ImGui.indent()
+                    makeCheckbox(::enemyIntentDamageImg)
+                    ImGui.unindent()
+                    ImGui.endDisabled()
+                    makeCheckbox(::enemyPowerAmount)
+                    makeCheckbox(::enemyPowerNames)
+                    makeCheckbox(::enemyPowerDescriptions)
+                }
+
+                if (ImGui.collapsingHeader("Player")) {
+                    makeCheckbox(::playerHP)
+                    makeCheckbox(::playerBlock)
+                    makeCheckbox(::playerPowerAmount)
+                    makeCheckbox(::playerPowerNames)
+                    makeCheckbox(::playerPowerDescriptions)
+                }
+
+                if (ImGui.collapsingHeader("Gold")) {
+                    makeCheckbox(::playerGold)
+                    makeCheckbox(::shopPrices)
+                }
+
+                if (ImGui.collapsingHeader("Relics")) {
+                    makeCheckbox(::relicNames)
+                    makeCheckbox(::relicDescriptions)
+                    makeCheckbox(::relicFlavor)
+                    makeCheckbox(::relicArt)
+                }
+
+                if (ImGui.collapsingHeader("Potions")) {
+                    makeCheckbox(::potionNames)
+                    makeCheckbox(::potionDescriptions)
+                    makeCheckbox(::potionArt)
+                }
+
+                if (ImGui.collapsingHeader("Orbs")) {
+                    makeCheckbox(::orbNumbers)
+                }
+
+                if (ImGui.collapsingHeader("Events")) {
+                    makeCheckbox(::eventOptions)
+                    ImGui.beginDisabled(eventOptions)
+                    ImGui.indent()
+                    makeCheckbox(::eventOptionsEffect)
+                    ImGui.unindent()
+                    ImGui.endDisabled()
+                }
+
                 if (ImGui.collapsingHeader("All Settings")) {
                     Companion::class.declaredMemberProperties
                         .filter { !it.name.startsWith("_") }
@@ -159,6 +220,12 @@ data class HiddenConfig(
                 }
             }
             ImGui.end()
+        }
+
+        private fun makeCheckbox(kprop: KMutableProperty0<Boolean>) {
+            if (ImGui.checkbox(kprop.name, kprop.get())) {
+                kprop.set(!kprop.get())
+            }
         }
 
         private fun makeCheckbox(thisRef: Companion, kprop: KMutableProperty1<Companion, Boolean>) {
