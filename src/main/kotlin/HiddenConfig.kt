@@ -1,8 +1,10 @@
 package com.evacipated.cardcrawl.mod.hiddeninfo
 
 import com.badlogic.gdx.Gdx
+import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.makeID
 import com.evacipated.cardcrawl.modthespire.lib.ConfigUtils
 import com.google.gson.GsonBuilder
+import com.megacrit.cardcrawl.core.CardCrawlGame
 import imgui.ImGui
 import java.nio.file.Paths
 import kotlin.reflect.KMutableProperty0
@@ -47,6 +49,7 @@ data class HiddenConfig(
     var eventOptions: Boolean = false,
 ) {
     companion object {
+        @Transient private val _strings: Map<String, String> = CardCrawlGame.languagePack.getUIString("HiddenConfig".makeID())?.TEXT_DICT ?: emptyMap()
         @Transient private var _dirty: Boolean = false
 
         private lateinit var _INSTANCE: HiddenConfig
@@ -223,7 +226,10 @@ data class HiddenConfig(
         }
 
         private fun makeCheckbox(kprop: KMutableProperty0<Boolean>) {
-            if (ImGui.checkbox(kprop.name, kprop.get())) {
+            val text = _strings[kprop.name]?.let {
+                "$it###${kprop.name}"
+            } ?: kprop.name
+            if (ImGui.checkbox(text, kprop.get())) {
                 kprop.set(!kprop.get())
             }
         }
