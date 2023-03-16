@@ -183,6 +183,7 @@ data class HiddenConfig(
                     makeCheckbox(::enemyPowerAmount)
                     makeCheckbox(::enemyPowerNames)
                     makeCheckbox(::enemyPowerDescriptions)
+                    makeCheckbox(::damageNumbers)
                 }
 
                 if (ImGui.collapsingHeader("Player")) {
