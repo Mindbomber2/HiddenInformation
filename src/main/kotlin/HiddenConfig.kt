@@ -29,6 +29,7 @@ data class HiddenConfig(
     var playerPowerNames: Boolean = true,
     var playerEnergy: Boolean = true,
     var playerGold: Boolean = true,
+    var rewardGold: Boolean = true,
     var shopPrices: Boolean = true,
     var damageNumbers: Boolean = true,
     var mapNodeType: Boolean = true,
@@ -100,6 +101,7 @@ data class HiddenConfig(
         var playerEnergy: Boolean by Setting()
 
         var playerGold: Boolean by Setting()
+        var rewardGold: Boolean by Setting()
         var shopPrices: Boolean by Setting()
 
         var damageNumbers: Boolean by Setting()
@@ -193,6 +195,7 @@ data class HiddenConfig(
 
                 if (ImGui.collapsingHeader("Gold")) {
                     makeCheckbox(::playerGold)
+                    makeCheckbox(::rewardGold)
                     makeCheckbox(::shopPrices)
                 }
 
