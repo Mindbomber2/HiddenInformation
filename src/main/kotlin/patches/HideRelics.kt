@@ -240,6 +240,20 @@ object HideRelics {
             }
     }
 
+    @SpirePatch2(
+        clz = AbstractRelic::class,
+        method = "renderCounter"
+    )
+    object Counter {
+        @JvmStatic
+        fun Prefix(): SpireReturn<Void> {
+            if (HiddenConfig.relicCounters) {
+                return SpireReturn.Return()
+            }
+            return SpireReturn.Continue()
+        }
+    }
+
     @JvmStatic
     fun hideName(): Boolean =
         HiddenConfig.relicNames

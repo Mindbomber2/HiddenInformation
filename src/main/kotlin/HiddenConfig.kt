@@ -39,6 +39,7 @@ data class HiddenConfig(
     var cardArt: Boolean = true,
     var relicNames: Boolean = true,
     var relicDescriptions: Boolean = true,
+    var relicCounters: Boolean = true,
     var relicFlavor: Boolean = true,
     var relicArt: Boolean = true,
     var potionNames: Boolean = true,
@@ -113,6 +114,7 @@ data class HiddenConfig(
 
         var relicNames: Boolean by Setting()
         var relicDescriptions: Boolean by Setting()
+        var relicCounters: Boolean by Setting()
         var relicFlavor: Boolean by Setting()
         var relicArt: Boolean by Setting()
 
@@ -197,6 +199,7 @@ data class HiddenConfig(
                 if (ImGui.collapsingHeader("Relics")) {
                     makeCheckbox(::relicNames)
                     makeCheckbox(::relicDescriptions)
+                    makeCheckbox(::relicCounters)
                     makeCheckbox(::relicFlavor)
                     makeCheckbox(::relicArt)
                 }
