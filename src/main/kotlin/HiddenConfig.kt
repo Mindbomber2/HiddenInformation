@@ -229,6 +229,11 @@ data class HiddenConfig(
                     makeCheckbox(::eventArt)
                 }
 
+                if (ImGui.collapsingHeader("Map")) {
+                    makeCheckbox(::mapNodeType)
+                    makeCheckbox(::bossIcon)
+                }
+
                 if (ImGui.collapsingHeader("All Settings")) {
                     Companion::class.declaredMemberProperties
                         .filter { !it.name.startsWith("_") }
