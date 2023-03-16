@@ -32,7 +32,7 @@ object HideEnemy {
                         m.replace(
                             "if (img == ${Model::class.qualifiedName}.getMissingno()) {" +
                                     "\$4 = (hb.height / img.getHeight()) * img.getWidth();" +
-                                    "\$2 = drawX - (\$4 / 2f) + animX;" +
+                                    "\$2 = hb.cX - (\$4 / 2f) + animX;" +
                                     "\$3 = hb.y + animY;" +
                                     "\$5 = hb.height;" +
                                     "}" +
