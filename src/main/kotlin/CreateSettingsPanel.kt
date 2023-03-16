@@ -11,6 +11,13 @@ import kotlin.reflect.jvm.isAccessible
 
 fun createSettingsPanel(): ModPanel {
     return ModPanel().apply {
+        label("Cards")
+        indent {
+            checkbox(HiddenConfig::cardTitles)
+            checkbox(HiddenConfig::cardDescriptions)
+            checkbox(HiddenConfig::cardArt)
+            checkbox(HiddenConfig::cardCosts)
+        }
     }
 }
 
