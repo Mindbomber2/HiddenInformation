@@ -1,6 +1,7 @@
 package com.evacipated.cardcrawl.mod.hiddeninfo
 
 import basemod.BaseMod
+import basemod.ModLabeledToggleButton
 import basemod.ModPanel
 import basemod.interfaces.EditStringsSubscriber
 import basemod.interfaces.ImGuiSubscriber
@@ -9,6 +10,7 @@ import com.badlogic.gdx.Gdx
 import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.assetPath
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer
 import com.megacrit.cardcrawl.core.Settings
+import com.megacrit.cardcrawl.helpers.FontHelper
 import com.megacrit.cardcrawl.helpers.ImageMaster
 import com.megacrit.cardcrawl.localization.UIStrings
 import imgui.ImGui
@@ -47,15 +49,12 @@ class HiddenInfoMod :
         HiddenConfig.load()
         HiddenConfig.save()
 
-        // Make settings panel
-        val settingsPanel = ModPanel()
-
         BaseMod.registerModBadge(
             ImageMaster.loadImage("images/modBadge.png".assetPath()),
             NAME,
             "kiooeht",
             "TODO",
-            settingsPanel
+            createSettingsPanel()
         )
     }
 

@@ -1,5 +1,6 @@
 package com.evacipated.cardcrawl.mod.hiddeninfo
 
+import basemod.ModToggleButton
 import com.badlogic.gdx.Gdx
 import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.makeID
 import com.evacipated.cardcrawl.modthespire.lib.ConfigUtils
@@ -54,13 +55,14 @@ data class HiddenConfig(
     var eventArt: Boolean = true,
 ) {
     companion object {
-        @Transient private val _strings: Map<String, String> = CardCrawlGame.languagePack.getUIString("HiddenConfig".makeID())?.TEXT_DICT ?: emptyMap()
+        @Transient internal val _strings: Map<String, String> = CardCrawlGame.languagePack.getUIString("HiddenConfig".makeID())?.TEXT_DICT ?: emptyMap()
         @Transient private var _dirty: Boolean = false
 
         private lateinit var _INSTANCE: HiddenConfig
 
-        private class Setting {
+        internal class Setting {
             private lateinit var realProp: KMutableProperty1<HiddenConfig, Boolean>
+            private var modToggleButton: ModToggleButton? = null
 
             private fun init(name: String) {
                 if (!this::realProp.isInitialized) {
@@ -68,6 +70,10 @@ data class HiddenConfig(
                             .filterIsInstance<KMutableProperty1<HiddenConfig, Boolean>>()
                             .firstOrNull { it.name == name } ?: throw NoSuchElementException(name)
                 }
+            }
+
+            fun setModToggleButton(btn: ModToggleButton) {
+                modToggleButton = btn
             }
 
             operator fun getValue(thisRef: Companion, property: KProperty<*>): Boolean {
@@ -80,6 +86,7 @@ data class HiddenConfig(
                     init(property.name)
                     if (realProp.get(_INSTANCE) != value) _dirty = true
                     realProp.set(_INSTANCE, value)
+                    modToggleButton?.enabled = value
                 }
             }
         }
