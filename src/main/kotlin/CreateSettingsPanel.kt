@@ -1,12 +1,16 @@
 package com.evacipated.cardcrawl.mod.hiddeninfo
 
-import basemod.*
+import basemod.ModLabel
+import basemod.ModPanel
+import basemod.ModToggleButton
+import basemod.ReflectionHacks
 import com.megacrit.cardcrawl.core.Settings
 import com.megacrit.cardcrawl.helpers.FontHelper
 import com.megacrit.cardcrawl.helpers.Hitbox
 import com.megacrit.cardcrawl.helpers.ImageMaster
 import kotlin.math.max
 import kotlin.reflect.KMutableProperty0
+import kotlin.reflect.KProperty0
 import kotlin.reflect.jvm.isAccessible
 
 fun createSettingsPanel(): ModPanel {
@@ -45,7 +49,7 @@ fun createSettingsPanel(): ModPanel {
                 checkbox(HiddenConfig::enemyBlock)
                 checkbox(HiddenConfig::enemyIntentDamage)
                 indent(32f) {
-                    checkbox(HiddenConfig::enemyIntentDamageImg)
+                    checkbox(HiddenConfig::enemyIntentDamageImg, disableIf = not(HiddenConfig::enemyIntentDamage))
                 }
                 checkbox(HiddenConfig::damageNumbers)
                 checkbox(HiddenConfig::enemyPowerAmount)
@@ -87,7 +91,7 @@ fun createSettingsPanel(): ModPanel {
                 checkbox(HiddenConfig::eventText)
                 checkbox(HiddenConfig::eventOptions)
                 indent(32f) {
-                    checkbox(HiddenConfig::eventOptionsEffect)
+                    checkbox(HiddenConfig::eventOptionsEffect, disableIf = HiddenConfig::eventOptions)
                 }
                 checkbox(HiddenConfig::eventArt)
             }
@@ -131,10 +135,10 @@ private fun ModPanel.label(text: String) {
     }
 }
 
-private fun ModPanel.checkbox(kprop: KMutableProperty0<Boolean>) {
+private fun ModPanel.checkbox(kprop: KMutableProperty0<Boolean>, vararg nothings: MyNothing, disableIf: () -> Boolean = {false}) {
     val text = HiddenConfig._strings[kprop.name] ?: kprop.name
     val tooltip = HiddenConfig._strings["${kprop.name}_tooltip"]
-    ModLabeledToggleButton(text, tooltip, x, y, Settings.CREAM_COLOR, FontHelper.tipBodyFont, kprop.get(), this, {}) {
+    ModDisableLabeledToggleButton(text, tooltip, x, y, Settings.CREAM_COLOR, FontHelper.tipBodyFont, kprop.get(), this, disableIf, {}) {
         kprop.set(it.enabled)
     }.let {
         this.addUIElement(it)
@@ -145,3 +149,8 @@ private fun ModPanel.checkbox(kprop: KMutableProperty0<Boolean>) {
         width = max(width, hb.width / Settings.scale + indent)
     }
 }
+
+private fun not(kprop: KProperty0<Boolean>): () -> Boolean =
+    { !kprop.get() }
+
+private class MyNothing private constructor() {}
