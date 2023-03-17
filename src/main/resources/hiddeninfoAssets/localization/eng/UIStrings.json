@@ -44,8 +44,8 @@
       "bossIcon": "Boss Preview",
       "eventNames": "Names",
       "eventText": "Text",
-      "eventOptions": "Event Options",
-      "eventOptionsEffect": "Event Option Effects",
+      "eventOptions": "Options",
+      "eventOptionsEffect": "Option Effects",
       "eventOptionsEffect_tooltip": "Hides the mechanical description of event options while keeping the flavor text.",
       "eventArt": "Art"
     }
