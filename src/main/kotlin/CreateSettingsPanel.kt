@@ -1,9 +1,6 @@
 package com.evacipated.cardcrawl.mod.hiddeninfo
 
-import basemod.ModLabel
-import basemod.ModPanel
-import basemod.ModToggleButton
-import basemod.ReflectionHacks
+import basemod.*
 import com.megacrit.cardcrawl.core.Settings
 import com.megacrit.cardcrawl.helpers.FontHelper
 import com.megacrit.cardcrawl.helpers.Hitbox
@@ -14,7 +11,14 @@ import kotlin.reflect.KProperty0
 import kotlin.reflect.jvm.isAccessible
 
 fun createSettingsPanel(): ModPanel {
-    return ModPanel().apply {
+    return object: ModPanel() {
+        override fun update() {
+            super.update()
+            if (!BaseMod.modSettingsUp) {
+                HiddenConfig.save()
+            }
+        }
+    }.apply {
         column {
             label("Cards")
             indent {
