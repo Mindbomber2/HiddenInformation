@@ -143,10 +143,12 @@ data class HiddenConfig(
             val configPath = Paths.get(ConfigUtils.CONFIG_DIR, "Hidden Information", "config.json")
             val configFile = Gdx.files.absolute(configPath.toString())
 
-            if (configFile.exists()) {
+            _INSTANCE = if (configFile.exists()) {
                 val gson = GsonBuilder()
                     .create()
-                _INSTANCE = gson.fromJson(configFile.reader(), HiddenConfig::class.java)
+                gson.fromJson(configFile.reader(), HiddenConfig::class.java)
+            } else {
+                HiddenConfig()
             }
         }
 
