@@ -199,6 +199,7 @@ data class HiddenConfig(
                     makeCheckbox(::playerPowerAmount)
                     makeCheckbox(::playerPowerNames)
                     makeCheckbox(::playerPowerDescriptions)
+                    makeCheckbox(::playerEnergy)
                 }
 
                 if (ImGui.collapsingHeader("Gold")) {
