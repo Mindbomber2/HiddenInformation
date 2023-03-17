@@ -1,11 +1,11 @@
 package com.evacipated.cardcrawl.mod.hiddeninfo
 
-import basemod.ModLabel
-import basemod.ModLabeledToggleButton
-import basemod.ModPanel
+import basemod.*
 import com.megacrit.cardcrawl.core.Settings
 import com.megacrit.cardcrawl.helpers.FontHelper
+import com.megacrit.cardcrawl.helpers.Hitbox
 import com.megacrit.cardcrawl.helpers.ImageMaster
+import kotlin.math.max
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.jvm.isAccessible
 
@@ -23,11 +23,27 @@ fun createSettingsPanel(): ModPanel {
 
 private var x = 360f
 private var y = 750f
+private var width = 0f
+private var indent = 0f
+
+private inline fun column(rPad: Float = 20f, size: Float = -1f, block: () -> Unit) {
+    val ySave = y
+    block.invoke()
+    x += if (size > 0) { size } else { width } + rPad
+    width = 0f
+    y = ySave
+}
 
 private inline fun indent(size: Float = 16f, block: () -> Unit) {
+    indent += size
     x += size
     block.invoke()
     x -= size
+    indent -= size
+}
+
+private fun vspace(size: Float = 16f) {
+    y -= size
 }
 
 private fun ModPanel.label(text: String) {
@@ -35,18 +51,22 @@ private fun ModPanel.label(text: String) {
     ModLabel(text, x, y, Settings.CREAM_COLOR, font, this) {
     }.let {
         this.addUIElement(it)
-        y -= font.lineHeight
+        y -= font.lineHeight / Settings.scale
+        val w = FontHelper.getWidth(it.font, it.text, 1f)
+        width = max(width, w / Settings.scale + indent)
     }
 }
 
 private fun ModPanel.checkbox(kprop: KMutableProperty0<Boolean>) {
     val text = HiddenConfig._strings[kprop.name] ?: kprop.name
-    ModLabeledToggleButton(text, x, y, Settings.CREAM_COLOR, FontHelper.tipBodyFont, true, this, {}) {
+    ModLabeledToggleButton(text, x, y, Settings.CREAM_COLOR, FontHelper.tipBodyFont, kprop.get(), this, {}) {
         kprop.set(it.enabled)
     }.let {
         this.addUIElement(it)
         kprop.isAccessible = true
         (kprop.getDelegate() as? HiddenConfig.Companion.Setting)?.setModToggleButton(it.toggle)
         y -= ImageMaster.OPTION_TOGGLE.height
+        val hb = ReflectionHacks.getPrivate<Hitbox>(it.toggle, ModToggleButton::class.java, "hb")
+        width = max(width, hb.width / Settings.scale + indent)
     }
 }
