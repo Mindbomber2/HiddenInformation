@@ -11,12 +11,86 @@ import kotlin.reflect.jvm.isAccessible
 
 fun createSettingsPanel(): ModPanel {
     return ModPanel().apply {
-        label("Cards")
-        indent {
-            checkbox(HiddenConfig::cardTitles)
-            checkbox(HiddenConfig::cardDescriptions)
-            checkbox(HiddenConfig::cardArt)
-            checkbox(HiddenConfig::cardCosts)
+        column {
+            label("Cards")
+            indent {
+                checkbox(HiddenConfig::cardTitles)
+                checkbox(HiddenConfig::cardDescriptions)
+                checkbox(HiddenConfig::cardArt)
+                checkbox(HiddenConfig::cardCosts)
+            }
+            vspace()
+            label("Relics")
+            indent {
+                checkbox(HiddenConfig::relicNames)
+                checkbox(HiddenConfig::relicDescriptions)
+                checkbox(HiddenConfig::relicCounters)
+                checkbox(HiddenConfig::relicFlavor)
+                checkbox(HiddenConfig::relicArt)
+            }
+            vspace()
+            label("Potions")
+            indent {
+                checkbox(HiddenConfig::potionNames)
+                checkbox(HiddenConfig::potionDescriptions)
+                checkbox(HiddenConfig::potionArt)
+            }
+        }
+
+        column {
+            label("Enemies")
+            indent {
+                checkbox(HiddenConfig::enemy)
+                checkbox(HiddenConfig::enemyHP)
+                checkbox(HiddenConfig::enemyBlock)
+                checkbox(HiddenConfig::enemyIntentDamage)
+                indent(32f) {
+                    checkbox(HiddenConfig::enemyIntentDamageImg)
+                }
+                checkbox(HiddenConfig::enemyPowerAmount)
+                checkbox(HiddenConfig::enemyPowerNames)
+                checkbox(HiddenConfig::enemyPowerDescriptions)
+                checkbox(HiddenConfig::damageNumbers)
+            }
+        }
+
+        column {
+            label("Player")
+            indent {
+                checkbox(HiddenConfig::playerHP)
+                checkbox(HiddenConfig::playerBlock)
+                checkbox(HiddenConfig::playerPowerAmount)
+                checkbox(HiddenConfig::playerPowerNames)
+                checkbox(HiddenConfig::playerPowerDescriptions)
+                checkbox(HiddenConfig::playerEnergy)
+                checkbox(HiddenConfig::orbNumbers)
+            }
+            vspace()
+            label("Gold")
+            indent {
+                checkbox(HiddenConfig::playerGold)
+                checkbox(HiddenConfig::rewardGold)
+                checkbox(HiddenConfig::shopPrices)
+            }
+        }
+
+        column {
+            label("Map")
+            indent {
+                checkbox(HiddenConfig::mapNodeType)
+                checkbox(HiddenConfig::bossIcon)
+            }
+            vspace()
+            label("Events")
+            indent {
+                checkbox(HiddenConfig::eventOptions)
+                indent(32f) {
+                    checkbox(HiddenConfig::eventOptionsEffect)
+                }
+                checkbox(HiddenConfig::eventNames)
+                checkbox(HiddenConfig::eventText)
+                checkbox(HiddenConfig::eventArt)
+            }
         }
     }
 }
