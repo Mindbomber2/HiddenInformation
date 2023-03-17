@@ -187,10 +187,10 @@ data class HiddenConfig(
                     makeCheckbox(::enemyIntentDamageImg)
                     ImGui.unindent()
                     ImGui.endDisabled()
+                    makeCheckbox(::damageNumbers)
                     makeCheckbox(::enemyPowerAmount)
                     makeCheckbox(::enemyPowerNames)
                     makeCheckbox(::enemyPowerDescriptions)
-                    makeCheckbox(::damageNumbers)
                 }
 
                 if (ImGui.collapsingHeader("Player")) {
@@ -227,14 +227,14 @@ data class HiddenConfig(
                 }
 
                 if (ImGui.collapsingHeader("Events")) {
+                    makeCheckbox(::eventNames)
+                    makeCheckbox(::eventText)
                     makeCheckbox(::eventOptions)
                     ImGui.beginDisabled(eventOptions)
                     ImGui.indent()
                     makeCheckbox(::eventOptionsEffect)
                     ImGui.unindent()
                     ImGui.endDisabled()
-                    makeCheckbox(::eventNames)
-                    makeCheckbox(::eventText)
                     makeCheckbox(::eventArt)
                 }
 

@@ -47,10 +47,10 @@ fun createSettingsPanel(): ModPanel {
                 indent(32f) {
                     checkbox(HiddenConfig::enemyIntentDamageImg)
                 }
+                checkbox(HiddenConfig::damageNumbers)
                 checkbox(HiddenConfig::enemyPowerAmount)
                 checkbox(HiddenConfig::enemyPowerNames)
                 checkbox(HiddenConfig::enemyPowerDescriptions)
-                checkbox(HiddenConfig::damageNumbers)
             }
         }
 
@@ -83,12 +83,12 @@ fun createSettingsPanel(): ModPanel {
             vspace()
             label("Events")
             indent {
+                checkbox(HiddenConfig::eventNames)
+                checkbox(HiddenConfig::eventText)
                 checkbox(HiddenConfig::eventOptions)
                 indent(32f) {
                     checkbox(HiddenConfig::eventOptionsEffect)
                 }
-                checkbox(HiddenConfig::eventNames)
-                checkbox(HiddenConfig::eventText)
                 checkbox(HiddenConfig::eventArt)
             }
         }
@@ -133,7 +133,8 @@ private fun ModPanel.label(text: String) {
 
 private fun ModPanel.checkbox(kprop: KMutableProperty0<Boolean>) {
     val text = HiddenConfig._strings[kprop.name] ?: kprop.name
-    ModLabeledToggleButton(text, x, y, Settings.CREAM_COLOR, FontHelper.tipBodyFont, kprop.get(), this, {}) {
+    val tooltip = HiddenConfig._strings["${kprop.name}_tooltip"]
+    ModLabeledToggleButton(text, tooltip, x, y, Settings.CREAM_COLOR, FontHelper.tipBodyFont, kprop.get(), this, {}) {
         kprop.set(it.enabled)
     }.let {
         this.addUIElement(it)
