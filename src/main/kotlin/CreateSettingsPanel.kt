@@ -26,17 +26,17 @@ fun createSettingsPanel(): ModPanel {
     }.apply {
         ModCenteredLabel(
             HiddenInfoMod.NAME,
-            Settings.WIDTH / Settings.scale / 2f,
-            829f,
+            Settings.WIDTH.unXScale() / 2f,
+            Settings.OPTION_Y.unYScale() + 321f,
             Settings.CREAM_COLOR,
             FontHelper.buttonLabelFont,
             this
         ) {}.let { this.addUIElement(it) }
 
-        val h = rbutton("disableAll", 1560f, 200f, font = FontHelper.tipHeaderFont) {
+        val h = rbutton("disableAll", 1560f, Settings.OPTION_Y.unYScale() - 308f, font = FontHelper.tipHeaderFont) {
             HiddenConfig.disableAll()
         }.height()
-        rbutton("enableAll", 1560f, 200f + h, font = FontHelper.tipHeaderFont) {
+        rbutton("enableAll", 1560f, Settings.OPTION_Y.unYScale() - 308f + h, font = FontHelper.tipHeaderFont) {
             HiddenConfig.enableAll()
         }
 
@@ -125,7 +125,7 @@ fun createSettingsPanel(): ModPanel {
 }
 
 private var x = 360f
-private var y = 750f
+private var y = Settings.OPTION_Y.unYScale() + 242f
 private var width = 0f
 private var indent = 0f
 
@@ -185,5 +185,11 @@ private fun ModPanel.rbutton(key: String, x: Float, y: Float, textColor: Color =
 
 private fun not(kprop: KProperty0<Boolean>): () -> Boolean =
     { !kprop.get() }
+
+private fun Number.unXScale(): Float =
+    this.toFloat() / Settings.xScale
+
+private fun Number.unYScale(): Float =
+    this.toFloat() / Settings.yScale
 
 private class MyNothing private constructor() {}
