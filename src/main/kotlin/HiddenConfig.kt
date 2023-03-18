@@ -170,6 +170,16 @@ data class HiddenConfig(
             _dirty = false
         }
 
+        private fun enableDisableAll(enable: Boolean) {
+            Companion::class.declaredMemberProperties
+                .filter { !it.name.startsWith("_") }
+                .filter { it.returnType == Boolean::class.createType() }
+                .filterIsInstance<KMutableProperty1<Companion, Boolean>>()
+                .forEach { it.set(this, enable) }
+        }
+        internal fun enableAll() = enableDisableAll(true)
+        internal fun disableAll() = enableDisableAll(false)
+
         internal fun imgui() {
             if (ImGui.begin("Hidden Information")) {
                 if (ImGui.collapsingHeader("Cards")) {

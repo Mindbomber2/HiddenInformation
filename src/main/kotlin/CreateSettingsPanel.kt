@@ -1,8 +1,11 @@
 package com.evacipated.cardcrawl.mod.hiddeninfo
 
 import basemod.*
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.evacipated.cardcrawl.mod.hiddeninfo.ui.config.ModCenteredLabel
 import com.evacipated.cardcrawl.mod.hiddeninfo.ui.config.ModDisableLabeledToggleButton
+import com.evacipated.cardcrawl.mod.hiddeninfo.ui.config.ModRightAlignedLabeledButton
 import com.megacrit.cardcrawl.core.Settings
 import com.megacrit.cardcrawl.helpers.FontHelper
 import com.megacrit.cardcrawl.helpers.Hitbox
@@ -29,6 +32,13 @@ fun createSettingsPanel(): ModPanel {
             FontHelper.buttonLabelFont,
             this
         ) {}.let { this.addUIElement(it) }
+
+        val h = rbutton("disableAll", 1560f, 200f, font = FontHelper.tipHeaderFont) {
+            HiddenConfig.disableAll()
+        }.height()
+        rbutton("enableAll", 1560f, 200f + h, font = FontHelper.tipHeaderFont) {
+            HiddenConfig.enableAll()
+        }
 
         column {
             label("cardsHeader")
@@ -163,6 +173,13 @@ private fun ModPanel.checkbox(kprop: KMutableProperty0<Boolean>, vararg nothings
         y -= ImageMaster.OPTION_TOGGLE.height
         val hb = ReflectionHacks.getPrivate<Hitbox>(it.toggle, ModToggleButton::class.java, "hb")
         width = max(width, hb.width / Settings.scale + indent)
+    }
+}
+
+private fun ModPanel.rbutton(key: String, x: Float, y: Float, textColor: Color = Color.WHITE, font: BitmapFont = FontHelper.buttonLabelFont, pressed: (ModLabeledButton) -> Unit): ModRightAlignedLabeledButton {
+    val text = HiddenConfig._strings[key] ?: key
+    return ModRightAlignedLabeledButton(text, x, y, textColor, Color.GREEN, font, this, pressed).also {
+        this.addUIElement(it)
     }
 }
 

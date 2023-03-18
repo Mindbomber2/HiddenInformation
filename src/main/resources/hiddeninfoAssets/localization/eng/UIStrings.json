@@ -9,6 +9,8 @@
       "goldHeader": "Gold",
       "mapHeader": "Map",
       "eventsHeader": "Events",
+      "enableAll": "Enable All",
+      "disableAll": "Disable All",
 
       "TRANSLATOR NOTE": "You can add a tooltip for any entry to help explain it by creating an entry named '<key>_tooltip'.",
       "cardTitles": "Names",
