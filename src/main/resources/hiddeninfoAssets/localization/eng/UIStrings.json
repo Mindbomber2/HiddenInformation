@@ -1,6 +1,15 @@
 {
   "${ModID}:HiddenConfig": {
     "TEXT_DICT": {
+      "cardsHeader": "Cards",
+      "relicsHeader": "Relics",
+      "potionsHeader": "Potions",
+      "enemiesHeader": "Enemies",
+      "playerHeader": "Player",
+      "goldHeader": "Gold",
+      "mapHeader": "Map",
+      "eventsHeader": "Events",
+
       "TRANSLATOR NOTE": "You can add a tooltip for any entry to help explain it by creating an entry named '<key>_tooltip'.",
       "cardTitles": "Names",
       "cardDescriptions": "Descriptions",

@@ -29,7 +29,7 @@ fun createSettingsPanel(): ModPanel {
         ) {}.let { this.addUIElement(it) }
 
         column {
-            label("Cards")
+            label("cardsHeader")
             indent {
                 checkbox(HiddenConfig::cardTitles)
                 checkbox(HiddenConfig::cardDescriptions)
@@ -37,7 +37,7 @@ fun createSettingsPanel(): ModPanel {
                 checkbox(HiddenConfig::cardCosts)
             }
             vspace()
-            label("Relics")
+            label("relicsHeader")
             indent {
                 checkbox(HiddenConfig::relicNames)
                 checkbox(HiddenConfig::relicDescriptions)
@@ -46,7 +46,7 @@ fun createSettingsPanel(): ModPanel {
                 checkbox(HiddenConfig::relicArt)
             }
             vspace()
-            label("Potions")
+            label("potionsHeader")
             indent {
                 checkbox(HiddenConfig::potionNames)
                 checkbox(HiddenConfig::potionDescriptions)
@@ -55,7 +55,7 @@ fun createSettingsPanel(): ModPanel {
         }
 
         column {
-            label("Enemies")
+            label("enemiesHeader")
             indent {
                 checkbox(HiddenConfig::enemy)
                 checkbox(HiddenConfig::enemyHP)
@@ -72,7 +72,7 @@ fun createSettingsPanel(): ModPanel {
         }
 
         column {
-            label("Player")
+            label("playerHeader")
             indent {
                 checkbox(HiddenConfig::playerHP)
                 checkbox(HiddenConfig::playerBlock)
@@ -83,7 +83,7 @@ fun createSettingsPanel(): ModPanel {
                 checkbox(HiddenConfig::orbNumbers)
             }
             vspace()
-            label("Gold")
+            label("goldHeader")
             indent {
                 checkbox(HiddenConfig::playerGold)
                 checkbox(HiddenConfig::rewardGold)
@@ -92,13 +92,13 @@ fun createSettingsPanel(): ModPanel {
         }
 
         column {
-            label("Map")
+            label("mapHeader")
             indent {
                 checkbox(HiddenConfig::mapNodeType)
                 checkbox(HiddenConfig::bossIcon)
             }
             vspace()
-            label("Events")
+            label("eventsHeader")
             indent {
                 checkbox(HiddenConfig::eventNames)
                 checkbox(HiddenConfig::eventText)
@@ -137,8 +137,9 @@ private fun vspace(size: Float = 16f) {
     y -= size
 }
 
-private fun ModPanel.label(text: String) {
-    val font = FontHelper.buttonLabelFont
+private fun ModPanel.label(key: String) {
+    val font = FontHelper.charDescFont
+    val text = HiddenConfig._strings[key] ?: key
     ModLabel(text, x, y, Settings.CREAM_COLOR, font, this) {
     }.let {
         this.addUIElement(it)
