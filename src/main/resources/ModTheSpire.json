@@ -2,7 +2,7 @@
   "modid": "${ModID}",
   "name": "${project.name}",
   "author_list": ["kiooeht"],
-  "description": "???",
+  "description": "Highly configurable mod, allowing the individual hiding almost every piece of information.",
   "version": "${project.version}",
   "sts_version": "${SlayTheSpire.version}",
   "mts_version": "${ModTheSpire.version}",
