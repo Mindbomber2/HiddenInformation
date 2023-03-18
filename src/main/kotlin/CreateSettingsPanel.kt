@@ -1,6 +1,8 @@
 package com.evacipated.cardcrawl.mod.hiddeninfo
 
 import basemod.*
+import com.evacipated.cardcrawl.mod.hiddeninfo.ui.config.ModCenteredLabel
+import com.evacipated.cardcrawl.mod.hiddeninfo.ui.config.ModDisableLabeledToggleButton
 import com.megacrit.cardcrawl.core.Settings
 import com.megacrit.cardcrawl.helpers.FontHelper
 import com.megacrit.cardcrawl.helpers.Hitbox

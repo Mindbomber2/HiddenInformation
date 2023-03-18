@@ -1,4 +1,4 @@
-package com.evacipated.cardcrawl.mod.hiddeninfo
+package com.evacipated.cardcrawl.mod.hiddeninfo.ui.config
 
 import basemod.ModLabel
 import basemod.ModLabeledToggleButton
