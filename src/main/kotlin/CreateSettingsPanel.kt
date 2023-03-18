@@ -19,6 +19,15 @@ fun createSettingsPanel(): ModPanel {
             }
         }
     }.apply {
+        ModCenteredLabel(
+            HiddenInfoMod.NAME,
+            Settings.WIDTH / Settings.scale / 2f,
+            829f,
+            Settings.CREAM_COLOR,
+            FontHelper.buttonLabelFont,
+            this
+        ) {}.let { this.addUIElement(it) }
+
         column {
             label("Cards")
             indent {
