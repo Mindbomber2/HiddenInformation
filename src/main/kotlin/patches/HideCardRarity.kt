@@ -4,6 +4,7 @@ import com.evacipated.cardcrawl.mod.hiddeninfo.HiddenConfig
 import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.iz
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch2
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatches2
+import com.evacipated.cardcrawl.modthespire.lib.SpireReturn
 import com.megacrit.cardcrawl.cards.AbstractCard
 import com.megacrit.cardcrawl.screens.SingleCardViewPopup
 import javassist.expr.ExprEditor
@@ -56,6 +57,21 @@ object HideCardRarity {
                     }
                 }
             }
+    }
+
+    @SpirePatch2(
+        cls = "com.blanktheevil.rarecardssparkle.vfx.CardParticleEffect",
+        method = "render",
+        requiredModId = "rare-cards-sparkle"
+    )
+    object RareCardsSparkle {
+        @JvmStatic
+        fun Prefix(): SpireReturn<Void> {
+            if (hide()) {
+                return SpireReturn.Return()
+            }
+            return SpireReturn.Continue()
+        }
     }
 
     @JvmStatic
