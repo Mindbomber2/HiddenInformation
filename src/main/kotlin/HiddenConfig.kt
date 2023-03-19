@@ -39,6 +39,8 @@ data class HiddenConfig(
     var cardTitles: Boolean = false,
     var cardCosts: Boolean = false,
     var cardArt: Boolean = false,
+    var cardBetaArt: Boolean = false,
+    var cardRarity: Boolean = false,
     var relicNames: Boolean = false,
     var relicDescriptions: Boolean = false,
     var relicCounters: Boolean = false,
@@ -121,6 +123,7 @@ data class HiddenConfig(
         var cardCosts: Boolean by Setting()
         var cardArt: Boolean by Setting()
         var cardBetaArt: Boolean by Setting()
+        var cardRarity: Boolean by Setting()
 
         var relicNames: Boolean by Setting()
         var relicDescriptions: Boolean by Setting()
@@ -192,6 +195,7 @@ data class HiddenConfig(
                     makeCheckbox(::cardBetaArt)
                     ImGui.unindent()
                     ImGui.endDisabled()
+                    makeCheckbox(::cardRarity)
                     makeCheckbox(::cardCosts)
                 }
 

@@ -19,6 +19,7 @@
       "cardArt_tooltip": "Replaces all card art with the locked card art.",
       "cardBetaArt": "Use Beta Art",
       "cardBetaArt_tooltip": "Replaces all card art with their beta art. NL This is identical to the Playtester Art Mode in the normal settings.",
+      "cardRarity": "Rarity",
       "cardCosts": "Costs",
       "relicNames": "Names",
       "relicDescriptions": "Descriptions",
