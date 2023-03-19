@@ -31,6 +31,16 @@ import com.megacrit.cardcrawl.screens.SingleCardViewPopup
     SpirePatch2(
         clz = SingleCardViewPopup::class,
         method = "renderTips"
+    ),
+    SpirePatch2(
+        cls = "com.evacipated.cardcrawl.mod.stslib.patches.CommonKeywordIconsPatches",
+        method = "RenderBadges",
+        requiredModId = "stslib"
+    ),
+    SpirePatch2(
+        cls = "com.evacipated.cardcrawl.mod.stslib.patches.CommonKeywordIconsPatches\$SingleCardViewRenderIconOnCard",
+        method = "drawBadge",
+        requiredModId = "stslib"
     )
 )
 object HideCardDescriptions {
