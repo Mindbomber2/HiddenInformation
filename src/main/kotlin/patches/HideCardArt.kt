@@ -2,11 +2,15 @@ package com.evacipated.cardcrawl.mod.hiddeninfo.patches
 
 import basemod.ReflectionHacks
 import com.evacipated.cardcrawl.mod.hiddeninfo.HiddenConfig
+import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.iz
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch2
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatches2
 import com.megacrit.cardcrawl.cards.AbstractCard
+import com.megacrit.cardcrawl.core.Settings
 import com.megacrit.cardcrawl.helpers.ImageMaster
 import com.megacrit.cardcrawl.screens.SingleCardViewPopup
+import javassist.expr.ExprEditor
+import javassist.expr.FieldAccess
 
 object HideCardArt {
     @SpirePatches2(
@@ -69,5 +73,33 @@ object HideCardArt {
         if (HiddenConfig.cardArt) {
             card.isLocked = isLockedSave
         }
+    }
+
+    @SpirePatches2(
+        SpirePatch2(
+            clz = AbstractCard::class,
+            method = "renderImage"
+        ),
+        SpirePatch2(
+            clz = SingleCardViewPopup::class,
+            method = "loadPortraitImg"
+        )
+    )
+    object BetaArt {
+        @JvmStatic
+        fun Instrument(): ExprEditor =
+            object : ExprEditor() {
+                override fun edit(f: FieldAccess) {
+                    if (f.iz(Settings::class, "PLAYTESTER_ART_MODE")) {
+                        f.replace(
+                            "\$_ = \$proceed(\$\$) || ${BetaArt::class.qualifiedName}.enabled();"
+                        )
+                    }
+                }
+            }
+
+        @JvmStatic
+        fun enabled(): Boolean =
+            HiddenConfig.cardBetaArt
     }
 }

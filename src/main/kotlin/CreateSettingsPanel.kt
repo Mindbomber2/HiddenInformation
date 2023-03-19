@@ -46,6 +46,9 @@ fun createSettingsPanel(): ModPanel {
                 checkbox(HiddenConfig::cardTitles)
                 checkbox(HiddenConfig::cardDescriptions)
                 checkbox(HiddenConfig::cardArt)
+                indent(32f) {
+                    checkbox(HiddenConfig::cardBetaArt, disableIf = HiddenConfig::cardArt)
+                }
                 checkbox(HiddenConfig::cardCosts)
             }
             vspace()

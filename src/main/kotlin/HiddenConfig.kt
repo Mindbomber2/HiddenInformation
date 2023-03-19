@@ -120,6 +120,7 @@ data class HiddenConfig(
         var cardTitles: Boolean by Setting()
         var cardCosts: Boolean by Setting()
         var cardArt: Boolean by Setting()
+        var cardBetaArt: Boolean by Setting()
 
         var relicNames: Boolean by Setting()
         var relicDescriptions: Boolean by Setting()
@@ -186,6 +187,11 @@ data class HiddenConfig(
                     makeCheckbox(::cardTitles)
                     makeCheckbox(::cardDescriptions)
                     makeCheckbox(::cardArt)
+                    ImGui.beginDisabled(cardArt)
+                    ImGui.indent()
+                    makeCheckbox(::cardBetaArt)
+                    ImGui.unindent()
+                    ImGui.endDisabled()
                     makeCheckbox(::cardCosts)
                 }
 
