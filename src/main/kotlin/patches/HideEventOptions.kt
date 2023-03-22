@@ -5,7 +5,9 @@ import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.iz
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch2
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatches2
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon
 import com.megacrit.cardcrawl.helpers.FontHelper
+import com.megacrit.cardcrawl.neow.NeowRoom
 import com.megacrit.cardcrawl.ui.buttons.LargeDialogOptionButton
 import javassist.expr.ExprEditor
 import javassist.expr.MethodCall
@@ -31,15 +33,22 @@ object HideEventOptions {
                 }
             }
 
-        private val regex = Regex("^(\\[.+]).*$")
+        private val regex = Regex("""^(\[.+]).*$""")
+        private val neowRegex = Regex("""^\[ .+ ]$""")
         @JvmStatic
         fun truncateText(msg: String): String {
             return if (HiddenConfig.eventOptions) {
                 ""
             } else if (HiddenConfig.eventOptionsEffect) {
-                regex.matchEntire(msg)?.let {
-                    it.groupValues[1]
-                } ?: ""
+                if (AbstractDungeon.getCurrMapNode()?.getRoom() is NeowRoom) {
+                    neowRegex.matchEntire(msg)?.let {
+                        ""
+                    } ?: msg
+                } else {
+                    regex.matchEntire(msg)?.let {
+                        it.groupValues[1]
+                    } ?: ""
+                }
             } else {
                 msg
             }
