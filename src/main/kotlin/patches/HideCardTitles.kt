@@ -27,15 +27,47 @@ object HideCardTitles {
             override fun edit(m: MethodCall) {
                 if (m.iz(FontHelper::class, "renderRotatedText") || m.iz(FontHelper::class, "renderFontCentered")) {
                     m.replace(
-                        "if (!${HideCardTitles::class.qualifiedName}.hide()) {" +
+                        "if (${card(m)}.upgraded && ${HideCardTitles::class.qualifiedName}.hideButKeepUpgrade()) {" +
+                                "\$3 = ${HideCardTitles::class.qualifiedName}.extractUpgrade(${card(m)});" +
+                                "\$_ = \$proceed(\$\$);" +
+                                "} else if (!${HideCardTitles::class.qualifiedName}.hide()) {" +
                                 "\$_ = \$proceed(\$\$);" +
                                 "}"
                     )
                 }
             }
+
+            private fun card(m: MethodCall): String =
+                if (m.enclosingClass.name == AbstractCard::class.java.name) {
+                    "this"
+                } else {
+                    "card"
+                }
         }
+
+    private val regex = Regex(""".*(\+\d*)""")
+
+    @JvmStatic
+    fun extractUpgrade(card: AbstractCard): String {
+        return if (card.upgraded) {
+            val result = regex.matchEntire(card.name)
+            if (result != null) {
+                result.groupValues[1]
+            } else if (card.timesUpgraded == 1) {
+                "+"
+            } else {
+                "+${card.timesUpgraded}"
+            }
+        } else {
+            ""
+        }
+    }
 
     @JvmStatic
     fun hide(): Boolean =
         HiddenConfig.cardTitles
+
+    @JvmStatic
+    fun hideButKeepUpgrade(): Boolean =
+        HiddenConfig.cardTitles && HiddenConfig.showCardUpgrades
 }

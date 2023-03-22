@@ -37,6 +37,7 @@ data class HiddenConfig(
     var bossIcon: Boolean = false,
     var cardDescriptions: Boolean = false,
     var cardTitles: Boolean = false,
+    var showCardUpgrades: Boolean = false,
     var cardCosts: Boolean = false,
     var cardArt: Boolean = false,
     var cardBetaArt: Boolean = false,
@@ -120,6 +121,7 @@ data class HiddenConfig(
 
         var cardDescriptions: Boolean by Setting()
         var cardTitles: Boolean by Setting()
+        var showCardUpgrades: Boolean by Setting()
         var cardCosts: Boolean by Setting()
         var cardArt: Boolean by Setting()
         var cardBetaArt: Boolean by Setting()
@@ -188,6 +190,11 @@ data class HiddenConfig(
             if (ImGui.begin("Hidden Information")) {
                 if (ImGui.collapsingHeader("Cards")) {
                     makeCheckbox(::cardTitles)
+                    ImGui.beginDisabled(!cardTitles)
+                    ImGui.indent()
+                    makeCheckbox(::showCardUpgrades)
+                    ImGui.unindent()
+                    ImGui.endDisabled()
                     makeCheckbox(::cardDescriptions)
                     makeCheckbox(::cardArt)
                     ImGui.beginDisabled(cardArt)

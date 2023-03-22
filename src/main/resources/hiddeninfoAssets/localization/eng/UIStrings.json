@@ -14,6 +14,8 @@
 
       "TRANSLATOR NOTE": "You can add a tooltip for any entry to help explain it by creating an entry named '<key>_tooltip'.",
       "cardTitles": "Names",
+      "showCardUpgrades": "Show Upgrades",
+      "showCardUpgrades_tooltip": "Will show a #g+ on upgraded cards when the name is hidden.",
       "cardDescriptions": "Descriptions",
       "cardArt": "Art",
       "cardArt_tooltip": "Replaces all card art with the locked card art.",

@@ -44,6 +44,9 @@ fun createSettingsPanel(): ModPanel {
             label("cardsHeader")
             indent {
                 checkbox(HiddenConfig::cardTitles)
+                indent(32f) {
+                    checkbox(HiddenConfig::showCardUpgrades, disableIf = not(HiddenConfig::cardTitles))
+                }
                 checkbox(HiddenConfig::cardDescriptions)
                 checkbox(HiddenConfig::cardArt)
                 indent(32f) {
