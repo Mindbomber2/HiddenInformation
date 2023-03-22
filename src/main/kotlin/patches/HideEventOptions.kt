@@ -3,6 +3,8 @@ package com.evacipated.cardcrawl.mod.hiddeninfo.patches
 import com.evacipated.cardcrawl.mod.hiddeninfo.HiddenConfig
 import com.evacipated.cardcrawl.mod.hiddeninfo.extensions.iz
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch2
+import com.evacipated.cardcrawl.modthespire.lib.SpirePatches2
+import com.evacipated.cardcrawl.modthespire.lib.SpireReturn
 import com.megacrit.cardcrawl.helpers.FontHelper
 import com.megacrit.cardcrawl.ui.buttons.LargeDialogOptionButton
 import javassist.expr.ExprEditor
@@ -41,6 +43,26 @@ object HideEventOptions {
             } else {
                 msg
             }
+        }
+    }
+
+    @SpirePatches2(
+        SpirePatch2(
+            clz = LargeDialogOptionButton::class,
+            method = "renderCardPreview"
+        ),
+        SpirePatch2(
+            clz = LargeDialogOptionButton::class,
+            method = "renderRelicPreview"
+        )
+    )
+    object RelicCardPreviews {
+        @JvmStatic
+        fun Prefix(): SpireReturn<Void> {
+            if (hide()) {
+                return SpireReturn.Return()
+            }
+            return SpireReturn.Continue()
         }
     }
 
