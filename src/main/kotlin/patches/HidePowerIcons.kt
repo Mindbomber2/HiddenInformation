@@ -115,6 +115,18 @@ object HidePowerIcons {
                         )
                     }
                 }
+
+                override fun edit(m: MethodCall) {
+                    if (m.iz(Integer::class, "toString")) {
+                        m.replace(
+                            "if (${HidePowerIcons::class.qualifiedName}.hideAmount(target)) {" +
+                                    "\$_ = \"?\";" +
+                                    "} else {" +
+                                    "\$_ = \$proceed(\$\$);" +
+                                    "}"
+                        )
+                    }
+                }
             }
     }
 
