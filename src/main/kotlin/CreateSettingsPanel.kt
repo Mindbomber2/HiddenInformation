@@ -64,6 +64,26 @@ fun createSettingsPanel(): ModPanel {
                 checkbox(HiddenConfig::relicFlavor)
                 checkbox(HiddenConfig::relicArt)
             }
+        }
+
+        column {
+            label("playerHeader")
+            indent {
+                checkbox(HiddenConfig::playerHP)
+                checkbox(HiddenConfig::playerBlock)
+                checkbox(HiddenConfig::playerPowerAmount)
+                checkbox(HiddenConfig::playerPowerNames)
+                checkbox(HiddenConfig::playerPowerDescriptions)
+                checkbox(HiddenConfig::playerEnergy)
+                checkbox(HiddenConfig::orbNumbers)
+            }
+            vspace()
+            label("goldHeader")
+            indent {
+                checkbox(HiddenConfig::playerGold)
+                checkbox(HiddenConfig::rewardGold)
+                checkbox(HiddenConfig::shopPrices)
+            }
             vspace()
             label("potionsHeader")
             indent {
@@ -87,26 +107,6 @@ fun createSettingsPanel(): ModPanel {
                 checkbox(HiddenConfig::enemyPowerAmount)
                 checkbox(HiddenConfig::enemyPowerNames)
                 checkbox(HiddenConfig::enemyPowerDescriptions)
-            }
-        }
-
-        column {
-            label("playerHeader")
-            indent {
-                checkbox(HiddenConfig::playerHP)
-                checkbox(HiddenConfig::playerBlock)
-                checkbox(HiddenConfig::playerPowerAmount)
-                checkbox(HiddenConfig::playerPowerNames)
-                checkbox(HiddenConfig::playerPowerDescriptions)
-                checkbox(HiddenConfig::playerEnergy)
-                checkbox(HiddenConfig::orbNumbers)
-            }
-            vspace()
-            label("goldHeader")
-            indent {
-                checkbox(HiddenConfig::playerGold)
-                checkbox(HiddenConfig::rewardGold)
-                checkbox(HiddenConfig::shopPrices)
             }
         }
 
