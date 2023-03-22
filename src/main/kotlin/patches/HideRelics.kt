@@ -18,9 +18,15 @@ import javassist.expr.FieldAccess
 import javassist.expr.MethodCall
 
 object HideRelics {
-    @SpirePatch2(
-        clz = AbstractRelic::class,
-        method = "renderTip"
+    @SpirePatches2(
+        SpirePatch2(
+            clz = AbstractRelic::class,
+            method = "renderTip"
+        ),
+        SpirePatch2(
+            clz = AbstractRelic::class,
+            method = "renderBossTip"
+        )
     )
     object Tooltip {
         private var tipsSave: ArrayList<PowerTip>? = null
