@@ -7,7 +7,7 @@
     <name>Hidden Information</name>
     <groupId>com.evacipated.cardcrawl.mod</groupId>
     <artifactId>hiddeninfo</artifactId>
-    <version>1.1</version>
+    <version>1.1.1</version>
 
     <properties>
         <ModID>hiddeninfo</ModID>
