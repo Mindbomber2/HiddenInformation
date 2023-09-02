@@ -8,6 +8,7 @@ import com.megacrit.cardcrawl.helpers.PowerTip
 import com.megacrit.cardcrawl.helpers.TipHelper
 import com.megacrit.cardcrawl.potions.AbstractPotion
 import com.megacrit.cardcrawl.rewards.RewardItem
+import com.megacrit.cardcrawl.ui.panels.PotionPopUp
 import com.megacrit.cardcrawl.ui.panels.TopPanel
 import javassist.expr.ExprEditor
 import javassist.expr.FieldAccess
@@ -78,6 +79,27 @@ object HidePotionNameDescription {
                                     "\$3 = p.tips;" +
                                     "\$_ = \$proceed(\$\$);" +
                                     "${Tooltip::class.qualifiedName}.Postfix(p);"
+                        )
+                    }
+                }
+            }
+    }
+
+    @SpirePatch2(
+        clz = PotionPopUp::class,
+        method = "update"
+    )
+    object PotionPopUpTips {
+        @JvmStatic
+        fun Instrument(): ExprEditor =
+            object : ExprEditor() {
+                override fun edit(m: MethodCall) {
+                    if (m.iz(TipHelper::class, "queuePowerTips")) {
+                        m.replace(
+                            "${Tooltip::class.qualifiedName}.Prefix(potion);" +
+                                    "\$3 = potion.tips;" +
+                                    "\$_ = \$proceed(\$\$);" +
+                                    "${Tooltip::class.qualifiedName}.Postfix(potion);"
                         )
                     }
                 }
